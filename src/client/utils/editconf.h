@@ -1,0 +1,1 @@
+void readFiletest(char *file, char *section, char *field, char **param);
