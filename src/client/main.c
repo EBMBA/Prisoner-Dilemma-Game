@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
@@ -11,8 +12,10 @@ int main(int argc, char const *argv[])
 {
 	int sock = 0, valread;
 	struct sockaddr_in serv_addr;
-	char *hello = "Client Zeubi ! \n";
+	char *hello = NULL;
 	char buffer[MAX_SOCK_SIZE] = {0};
+
+	hello = malloc(100 * sizeof(char));
 
 	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 	{
@@ -24,7 +27,7 @@ int main(int argc, char const *argv[])
 	serv_addr.sin_port = htons(PORT);
 	
 	// Convert IPv4 and IPv6 addresses from text to binary form
-	if(inet_pton(AF_INET, "10.30.111.117", &serv_addr.sin_addr)<=0)
+	if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)
 	{
 		printf("\nInvalid address/ Address not supported \n");
 		return -1;
@@ -37,7 +40,14 @@ int main(int argc, char const *argv[])
 	}
 	send(sock , hello , strlen(hello) , 0 );
 	printf("Hello message sent\n");
-	valread = read( sock , buffer, MAX_SOCK_SIZE);
-	printf("%s\n",buffer );
+
+	while (1)
+	{
+		valread = read( sock , buffer, MAX_SOCK_SIZE);
+		printf("%s\nMessage à envoyer :\n",buffer );
+	}
+	
+	// valread = read( sock , buffer, MAX_SOCK_SIZE);
+	// printf("%s\n",buffer );
 	return 0;
 }

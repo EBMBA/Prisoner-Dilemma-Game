@@ -104,3 +104,8 @@ void set_game(Game *game_g)
 {
     game = game_g;
 }
+
+void set_players_game(Game *game_g, Player player1, Player player2 ){
+    game_g->player1 = player1;
+    game_g->player2 = player2;
+}
