@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include "../../common/player/player.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -17,6 +18,8 @@ typedef struct
     unsigned int current_round;
     enum actions action;
     double player_reacttime;
+    Player player1;
+    Player player2;
 } Game;
 
 Game *init_game(void);
@@ -28,5 +31,6 @@ bool game_next_round(void);
 void game_set_player_reacttime(struct timeval round_start_time, struct timeval action_clicked_time);
 Game *get_game(void);
 void set_game(Game *);
+void set_players_game(Game *game_g, Player player1, Player player2 );
 
 #endif
