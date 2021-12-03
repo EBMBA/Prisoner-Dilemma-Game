@@ -96,13 +96,20 @@ void idClient()
         }
         id = atoi(text);
     }
+    fclose(fp);
+
+    FILE * fp2;
+    fp2 = fopen("../configuration/.id","wb");
+
+
     if (id == 0)
     {
-        printf("ID == 0\n");
+        printf("ID == 0\n"); //request ID
+
     }
     else
     {
-        printf("ID = %d\n",id);
+        printf("ID = %d\n",id); //send ID to server
     }
 
 }
