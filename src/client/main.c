@@ -8,7 +8,7 @@
  */
 
 #include <stdio.h>
-#include "../src/launcher.h"
+#include "../src/client/views/view.h"
 
 int main(int argc, char **argv)
 {

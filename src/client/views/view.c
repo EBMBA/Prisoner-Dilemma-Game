@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../src/launcher.h"
+#include "../src/client/views/view.h"
 
 GtkWidget *window;
 GtkWidget *winJeu;
@@ -13,7 +13,7 @@ void init_main_window(int argc, char **argv)
 {
     
     gtk_init(&argc, &argv);
-    GtkBuilder *builder = gtk_builder_new_from_file("/home/student/Documents/ICS/prisoner_dilemma/include/glade/Interface.glade");
+    GtkBuilder *builder = gtk_builder_new_from_file("/home/student/Documents/ICS/prisoner_dilemma/src/client/glade/Interface.glade");
     window = GTK_WIDGET(gtk_builder_get_object(builder, "app_win"));
     g_signal_connect(G_OBJECT(window), "destroy",(GCallback) on_window_main_destroy, NULL); 
     gtk_builder_connect_signals(builder, NULL);
@@ -22,10 +22,9 @@ void init_main_window(int argc, char **argv)
     GtkWidget *buttonPlay;
     buttonPlay = GTK_WIDGET(gtk_builder_get_object(builder, "buttonPlay"));
 
-    gtk_widget_override_background_color
 }
 void on_buttonPlay_clicked(GtkButton *b){
-    GtkBuilder *builderJeu = gtk_builder_new_from_file("/home/student/Documents/ICS/prisoner_dilemma/include/glade/InterfaceJeu1.glade");
+    GtkBuilder *builderJeu = gtk_builder_new_from_file("/home/student/Documents/ICS/prisoner_dilemma/src/client/glade/InterfaceJeu1.glade");
     winJeu = GTK_WIDGET(gtk_builder_get_object(builderJeu, "app_jeu"));
     gtk_widget_show(winJeu);
     g_signal_connect(G_OBJECT(winJeu), "destroy",(GCallback) on_window_main_destroy, NULL);
