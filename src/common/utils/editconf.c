@@ -11,11 +11,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include"ini.h"
+#include "ini.h"
 #include "editconf.h"
 
-#define CONF_FILE "../configuration/config.ini"
-#define ID_FILE "../configuration/.id"
+#define CLIENT_CONF_FILE "../../client/configuration/config.ini/config.ini"
+#define SERVER_CONF_FILE "../../server/configuration/config.ini/config.ini"
+#define ID_FILE "../../client/configuration/config.ini/.id"
 
 
 void main()
@@ -35,25 +36,25 @@ void main()
     
     // char *IP = NULL ;
     // IP = malloc(50 * sizeof(char));
-    // readFile(CONF_FILE, section, "IP", &IP);
+    // readFile(CLIENT_CONF_FILE, section, "IP", &IP);
     // printf("IP : %s \n",IP);
 
     // char *port= NULL;
     // port = malloc(50 * sizeof(char));
-    // readFile(CONF_FILE, section, "port", &port);
+    // readFile(CLIENT_CONF_FILE, section, "port", &port);
     // printf("port : %s \n",port);
 
     // char *test = NULL;
     // test =  malloc(50 * sizeof(char));
-    // readFile(CONF_FILE, section, "test", &test);
+    // readFile(CLIENT_CONF_FILE, section, "test", &test);
     // printf("test : %s \n",test);
 }
 
 /**
- * @brief return a param from a file location, a section, and a field
- * @param file 
- * @param section 
- * @param field 
+ * @brief return a param from a .ini conf file
+ * @param file path of file 
+ * @param section section in which the param is
+ * @param field field of param to return
  * @return char* : param in a config file .ini
  */
 void readFile(char *file, char *section, char *field, char **param)
@@ -67,7 +68,7 @@ void readFile(char *file, char *section, char *field, char **param)
     }
     ini_free(f);
     errno=61;
-    perror("Configuration file is not correct ");
+    perror("Configuration file is not correct");
     exit(-5);
 }
 
@@ -87,7 +88,7 @@ u_int16_t getID()
     if (fp == NULL) 
     {
         errno=2;
-        perror("file '.id' is missing ");
+        perror("file '.id' is missing");
         exit(-5);
     }
 
@@ -121,7 +122,7 @@ int setID(u_int16_t ID)
     if (fp == NULL) 
     {
         errno=2;
-        perror("file '.id' is missing ");
+        perror("file '.id' is missing");
         exit(-5);
     }
     else
