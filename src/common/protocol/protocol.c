@@ -32,6 +32,7 @@ packet get_parse(char *bufferIn)
 
     return packetd;
 }
+
 char *set_parse(packet packetd)
 {
     printf("Protocol 5 \n");
