@@ -4,8 +4,9 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
+#include "../common/protocol/protocol.h"
 
-#define PORT 8080
+#define PORT 8085
 #define MAX_SOCK_SIZE 1024
 
 int main(int argc, char const *argv[])
@@ -13,9 +14,18 @@ int main(int argc, char const *argv[])
 	int sock = 0, valread;
 	struct sockaddr_in serv_addr;
 	char *hello = NULL;
-	char buffer[MAX_SOCK_SIZE] = {0};
+	char bufferIn[MAX_SOCK_SIZE] = {0};
+	char *bufferOut = NULL;
+	packet packetd;
 
-	hello = malloc(100 * sizeof(char));
+	packetd.client_id = 0;
+    packetd.game_id = 0;
+    packetd.action_id = 0;
+    packetd.result_id = 0;
+    packetd.money = 0;
+    packetd.numberRound = 0;
+
+	//hello = malloc(100 * sizeof(char));
 
 	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 	{
@@ -38,13 +48,17 @@ int main(int argc, char const *argv[])
 		printf("\nConnection Failed \n");
 		return -1;
 	}
-	send(sock , hello , strlen(hello) , 0 );
+
+	// Parse in bufferOut
+	bufferOut = set_parse(packetd);
+
+	send(sock , bufferOut , strlen(bufferOut) , 0);
 	printf("Hello message sent\n");
 
 	while (1)
 	{
-		valread = read( sock , buffer, MAX_SOCK_SIZE);
-		printf("%s\nMessage à envoyer :\n",buffer );
+		valread = read( sock , bufferIn, MAX_SOCK_SIZE);
+		printf("%s\n",bufferIn);
 	}
 	
 	// valread = read( sock , buffer, MAX_SOCK_SIZE);
