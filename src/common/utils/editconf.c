@@ -72,7 +72,6 @@ void readFile(char *file, char *section, char *field, char **param)
     exit(-5);
 }
 
-
 /**
  * @brief get ID from ID_FILE
  * @return u_int16_t : ID 
