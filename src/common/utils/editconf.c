@@ -14,10 +14,9 @@
 #include "ini.h"
 #include "editconf.h"
 
-#define CLIENT_CONF_FILE "../../client/configuration/config.ini/config.ini"
-#define SERVER_CONF_FILE "../../server/configuration/config.ini/config.ini"
+#define CLIENT_CONF_FILE "../../client/configuration/config.ini"
+#define SERVER_CONF_FILE "../../server/configuration/config.ini"
 #define ID_FILE "../../client/configuration/config.ini/.id"
-
 
 void main()
 {
@@ -30,24 +29,30 @@ void main()
     // id = getID();
     // printf("ID = %d\n",id);
 
-    // // char *file = "../config.ini";
-    // char *section = "Serveur Configuration";
-    // //char *field = "IP";
-    
-    // char *IP = NULL ;
+    // char *IP = NULL;
     // IP = malloc(50 * sizeof(char));
-    // readFile(CLIENT_CONF_FILE, section, "IP", &IP);
-    // printf("IP : %s \n",IP);
+    // readFile(CLIENT_CONF_FILE, "Serveur Configuration", "IP", &IP);
+    // printf("%s\n", IP);
 
-    // char *port= NULL;
+    // char *port = NULL;
     // port = malloc(50 * sizeof(char));
-    // readFile(CLIENT_CONF_FILE, section, "port", &port);
-    // printf("port : %s \n",port);
+    // readFile(CLIENT_CONF_FILE, "Serveur Configuration", "port", &port);
+    // printf("%s\n", port);
 
-    // char *test = NULL;
-    // test =  malloc(50 * sizeof(char));
-    // readFile(CLIENT_CONF_FILE, section, "test", &test);
-    // printf("test : %s \n",test);
+    // char *pseudo = NULL;
+    // pseudo =  malloc(50 * sizeof(char));
+    // readFile(CLIENT_CONF_FILE, "Player", "pseudo", &pseudo);
+    // printf("%s\n",pseudo);
+
+    // char *number_round = NULL;
+    // number_round =  malloc(50 * sizeof(char));
+    // readFile(SERVER_CONF_FILE, "Game Configuration", "number_of_rounds", &number_round);
+    // printf("%s\n",number_round);
+
+    // char *money = NULL;
+    // money =  malloc(50 * sizeof(char));
+    // readFile(SERVER_CONF_FILE, "Game Configuration", "money_per_round", &money);
+    // printf("%s\n",money);
 }
 
 /**
@@ -67,7 +72,7 @@ void readFile(char *file, char *section, char *field, char **param)
         return;
     }
     ini_free(f);
-    errno=61;
+    errno = 61;
     perror("Configuration file is not correct");
     exit(-5);
 }
@@ -82,11 +87,11 @@ u_int16_t getID()
     char text[128];
     char tmpc[2];
 
-    FILE * fp;
-    fp = fopen(ID_FILE,"r");
-    if (fp == NULL) 
+    FILE *fp;
+    fp = fopen(ID_FILE, "r");
+    if (fp == NULL)
     {
-        errno=2;
+        errno = 2;
         perror("file '.id' is missing");
         exit(-5);
     }
@@ -94,12 +99,13 @@ u_int16_t getID()
     else
     {
         char c = fgetc(fp);
-        text[0]=c;
-        tmpc[1]=0;
+        text[0] = c;
+        tmpc[1] = 0;
 
-        while ((c != EOF)){
+        while ((c != EOF))
+        {
             c = fgetc(fp);
-            tmpc[0]=c;
+            tmpc[0] = c;
             strcat(text, tmpc);
         }
         id = atoi(text);
@@ -116,17 +122,17 @@ u_int16_t getID()
 int setID(u_int16_t ID)
 {
     int ret = 0;
-    FILE * fp;
-    fp = fopen(ID_FILE,"w");
-    if (fp == NULL) 
+    FILE *fp;
+    fp = fopen(ID_FILE, "w");
+    if (fp == NULL)
     {
-        errno=2;
+        errno = 2;
         perror("file '.id' is missing");
         exit(-5);
     }
     else
     {
-        fprintf(fp, "%d",ID);
+        fprintf(fp, "%d", ID);
         fclose(fp);
 
         u_int16_t verif = getID();
