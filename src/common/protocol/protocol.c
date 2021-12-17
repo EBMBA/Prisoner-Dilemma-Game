@@ -27,8 +27,9 @@ packet get_parse(char *bufferIn)
     packetd.game_id = tokenI[1];
     packetd.action_id = tokenI[2];
     packetd.result_id = tokenI[3];
-    packetd.money = tokenI[4];
-    packetd.numberRound = tokenI[5];
+    packetd.earned_money = tokenI[4];
+    packetd.time = token[5];
+    packetd.current_round = tokenI[6];
 
     return packetd;
 }
@@ -38,13 +39,14 @@ char *set_parse(packet packetd)
     printf("Protocol 5 \n");
     char *bufferOut = malloc(sizeof(packetd));
 
-    sprintf(bufferOut, "%u;%u;%u;%u;%u;%u",
+    sprintf(bufferOut, "%u;%u;%u;%u;%u;%u;%u",
             packetd.client_id,
             packetd.game_id,
             packetd.action_id,
             packetd.result_id,
-            packetd.money,
-            packetd.numberRound);
+            packetd.earned_money,
+            packetd.time,
+            packetd.current_round);
     printf("Protocol 6 \n");
     return bufferOut;
 }
