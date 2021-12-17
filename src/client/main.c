@@ -1,43 +1,18 @@
+/**
+ * @file main.c
+ * @author KVEP - https://gitlab.com/kvep
+ * @version 1.0
+ * @date 2021-11-17
+ * 
+ * @copyright Copyright (c) 2021
+ */
+
 #include <stdio.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <string.h>
+#include "../src/client/views/view.h"
 
-#define PORT 8080
-#define MAX_SOCK_SIZE 1024
-
-int main(int argc, char const *argv[])
+int main(int argc, char **argv)
 {
-	int sock = 0, valread;
-	struct sockaddr_in serv_addr;
-	char *hello = "Client Zeubi ! \n";
-	char buffer[MAX_SOCK_SIZE] = {0};
-
-	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-	{
-		printf("\n Socket creation error \n");
-		return -1;
-	}
-
-	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_port = htons(PORT);
-	
-	// Convert IPv4 and IPv6 addresses from text to binary form
-	if(inet_pton(AF_INET, "10.30.111.117", &serv_addr.sin_addr)<=0)
-	{
-		printf("\nInvalid address/ Address not supported \n");
-		return -1;
-	}
-
-	if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
-	{
-		printf("\nConnection Failed \n");
-		return -1;
-	}
-	send(sock , hello , strlen(hello) , 0 );
-	printf("Hello message sent\n");
-	valread = read( sock , buffer, MAX_SOCK_SIZE);
-	printf("%s\n",buffer );
-	return 0;
+	init_main_window(argc,argv);
+	gtk_main();
+	return (0);
 }
