@@ -116,14 +116,42 @@ void *threadProcess(void *ptr) {
     packetd = get_parse(buffer_in);
     if ( packetd.client_id == 0 )
     {
+        //player = init_player((u_int16_t) connection->index, connection);
         packetd.client_id = connection->index;
         buffer_out = set_parse(packetd); // sprintf(buffer_out, "%i", connection->index);
         write(connection->sockfd, buffer_out, strlen(buffer_out));
     }
     
+    Game *game;
 
     while ((len = read(connection->sockfd, buffer_in, BUFFER_SIZE)) > 0) {
 
+        packet packetd = get_parse(buffer_in);
+
+        
+
+        switch (packetd.action_id)
+        {
+        case PLAY: // First time or restart after error
+            // TODO check if player was not already in a game 
+            if ( ( game = find_game(packetd.game_id) ) == NULL ) // Create game because no game avalaible
+            {
+                game = create_game(connection, game);
+            }
+            else{
+                game = join_game(connection, game);
+
+                // send message to player wait or play 
+            }
+            
+            // TODO if he wasn't : check if there are a available game or create a new game 
+            break;
+        
+        default:
+            break;
+        }
+        
+/* 
         if (strncmp(buffer_in, "bye", 3) == 0) {
             break;
         }
@@ -148,7 +176,7 @@ void *threadProcess(void *ptr) {
             }
         } else {
             write(connection->sockfd, buffer_out, strlen(buffer_out));
-        }
+        } */
 
         //clear input buffer
         memset(buffer_in, '\0', BUFFER_SIZE);

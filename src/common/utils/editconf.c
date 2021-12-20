@@ -7,18 +7,11 @@
  * @copyright Copyright (c) 2021
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include "ini.h"
+
 #include "editconf.h"
 
-#define CLIENT_CONF_FILE "../../client/configuration/config.ini"
-#define SERVER_CONF_FILE "../../server/configuration/config.ini"
-#define ID_FILE "../../client/configuration/config.ini/.id"
 
-void main()
+/*void main()
 {
     // u_int16_t id = getID();
     // printf("ID = %d\n",id);
@@ -53,7 +46,7 @@ void main()
     // money =  malloc(50 * sizeof(char));
     // readFile(SERVER_CONF_FILE, "Game Configuration", "money_per_round", &money);
     // printf("%s\n",money);
-}
+}*/
 
 /**
  * @brief return a param from a .ini conf file

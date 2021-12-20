@@ -8,7 +8,7 @@
  */
 
 #include <stdio.h>
-#include "../src/client/views/view.h"
+#include "views/view.h"
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>

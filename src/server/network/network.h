@@ -14,7 +14,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include "../../common/protocol/protocol.h"
-
+#include "../../common/player/player.h"
+#include "../games_management/gamesM.h"
 
 // Define a listen port 
 #define PORT 8085
