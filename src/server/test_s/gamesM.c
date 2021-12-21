@@ -4,8 +4,7 @@
 #include <stdlib.h>
 
 #include "gamesM.h"
-#include "../../common/protocol/protocol.h"
-
+#include "protocol.h"
 
 GamesM gamesM;
 

@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "../network/network.h"
+#include "network.h"
 
 typedef struct
 {

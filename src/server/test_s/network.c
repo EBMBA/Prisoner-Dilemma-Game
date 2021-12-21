@@ -12,9 +12,9 @@
 #include <stdbool.h>
 
 #include "network.h"
-#include "../../common/protocol/protocol.h"
-#include "../game/game.h"
-#include "../games_management/gamesM.h"
+#include "protocol.h"
+#include "game.h"
+#include "gamesM.h"
 
 
 connection_t* connections[MAX_SIMULTANEOUS_CONNECTIONS];

@@ -7,7 +7,6 @@
  * @copyright Copyright (c) 2021
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,7 +14,6 @@
 
 #include "editconf.h"
 #include "ini.h"
-
 
 /*void main()
 {

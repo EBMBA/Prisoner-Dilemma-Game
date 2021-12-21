@@ -55,6 +55,7 @@ char *set_parse(packet packetd)
             packetd.earned_money,
             packetd.time,
             packetd.current_round);
+    //printf("Protocol 6 \n");
     printf("Packet to buffer : ok \n");
     return bufferOut;
 }
