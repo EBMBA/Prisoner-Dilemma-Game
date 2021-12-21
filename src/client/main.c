@@ -59,7 +59,7 @@ int main(int argc, char **argv)
 	}
 
 	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_port = htons(port);
+	serv_addr.sin_port = htons(atoi(port));
 	
 	// Convert IPv4 and IPv6 addresses from text to binary form
 	if(inet_pton(AF_INET, IP, &serv_addr.sin_addr)<=0)
