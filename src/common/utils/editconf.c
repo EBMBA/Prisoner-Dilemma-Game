@@ -18,42 +18,45 @@
 #define SERVER_CONF_FILE "../../server/configuration/config.ini"
 #define ID_FILE "../../client/configuration/config.ini/.id"
 
-// void main()
-// {
-    // u_int16_t id = getID();
-    // printf("ID = %d\n",id);
+/*
+void main()
+{
+    u_int16_t id = getID();
+    printf("ID = %d\n",id);
 
-    // int verif=setID(16);
-    // printf("error code = %d\n",verif);
+    int verif=setID(16);
+    printf("error code = %d\n",verif);
 
-    // id = getID();
-    // printf("ID = %d\n",id);
+    id = getID();
+    printf("ID = %d\n",id);
 
-    // char *IP = NULL;
-    // IP = malloc(50 * sizeof(char));
-    // readFile(CLIENT_CONF_FILE, "Serveur Configuration", "IP", &IP);
-    // printf("%s\n", IP);
+    char *IP = NULL;
+    IP = malloc(50 * sizeof(char));
+    readFile(CLIENT_CONF_FILE, "Serveur Configuration", "IP", &IP);
+    printf("%s\n", IP);
 
-    // char *port = NULL;
-    // port = malloc(50 * sizeof(char));
-    // readFile(CLIENT_CONF_FILE, "Serveur Configuration", "port", &port);
-    // printf("%s\n", port);
+    char *port = NULL;
+    port = malloc(50 * sizeof(char));
+    readFile(CLIENT_CONF_FILE, "Serveur Configuration", "port", &port);
+    printf("%s\n", port);
 
-    // char *pseudo = NULL;
-    // pseudo =  malloc(50 * sizeof(char));
-    // readFile(CLIENT_CONF_FILE, "Player", "pseudo", &pseudo);
-    // printf("%s\n",pseudo);
+    char *pseudo = NULL;
+    pseudo =  malloc(50 * sizeof(char));
+    readFile(CLIENT_CONF_FILE, "Player", "pseudo", &pseudo);
+    printf("%s\n",pseudo);
 
-    // char *number_round = NULL;
-    // number_round =  malloc(50 * sizeof(char));
-    // readFile(SERVER_CONF_FILE, "Game Configuration", "number_of_rounds", &number_round);
-    // printf("%s\n",number_round);
+    char *number_round = NULL;
+    number_round =  malloc(50 * sizeof(char));
+    readFile(SERVER_CONF_FILE, "Game Configuration", "number_of_rounds", &number_round);
+    printf("%s\n",number_round);
 
-    // char *money = NULL;
-    // money =  malloc(50 * sizeof(char));
-    // readFile(SERVER_CONF_FILE, "Game Configuration", "money_per_round", &money);
-    // printf("%s\n",money);
-//}
+    char *money = NULL;
+    money =  malloc(50 * sizeof(char));
+    readFile(SERVER_CONF_FILE, "Game Configuration", "money_per_round", &money);
+    printf("%s\n",money);
+}
+*/
+
 
 /**
  * @brief return a param from a .ini conf file
