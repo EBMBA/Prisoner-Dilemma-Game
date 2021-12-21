@@ -6,6 +6,8 @@
 #define GAMESM_H
 
 #include "../game/game.h"
+#include "../../common/protocol/protocol.h"
+#include <stdbool.h>
 
 typedef struct 
 {

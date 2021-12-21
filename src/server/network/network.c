@@ -137,11 +137,18 @@ void *threadProcess(void *ptr) {
             if ( ( game = find_game(packetd.game_id) ) == NULL ) // Create game because no game avalaible
             {
                 game = create_game(connection, game);
+
             }
             else{
                 game = join_game(connection, game);
 
-                // send message to player wait or play 
+                // send message to player wait or play
+                game = init_start_game(game);
+
+                send_packet(game);
+                    //For player1
+                    
+                    
             }
             
             // TODO if he wasn't : check if there are a available game or create a new game 

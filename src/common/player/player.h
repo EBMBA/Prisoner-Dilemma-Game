@@ -1,4 +1,4 @@
-#include <stdbool.h>
+/* #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,4 +21,4 @@ typedef struct
 
 Player init_player(u_int16_t id, connection_t connection);
 
-#endif
+#endif */

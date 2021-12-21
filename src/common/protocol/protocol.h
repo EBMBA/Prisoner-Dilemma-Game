@@ -12,6 +12,10 @@
 #define BETRAY 3
 #define NO_RESPONSE 4
 #define FINISH 5
+#define START 6
+#define NOT_YOUR_TURN 7
+#define YOUR_TURN 8
+
 
 typedef struct 
 {
