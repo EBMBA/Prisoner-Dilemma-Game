@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "../common/protocol/protocol.h"
-#include "../src/common/utils/editconf.h"
+#include "../common/utils/editconf.h"
 
 //#define PORT 8085
 #define MAX_SOCK_SIZE 1024
