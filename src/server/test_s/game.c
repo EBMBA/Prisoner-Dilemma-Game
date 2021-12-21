@@ -5,10 +5,10 @@
 
 
 #include "game.h"
-#include "../../common/utils/editconf.h"
-#include "../network/network.h"
-#include "../../common/protocol/protocol.h"
-#include "../games_management/gamesM.h"
+#include "editconf.h"
+#include "network.h"
+#include "protocol.h"
+#include "gamesM.h"
 
 Game *init_game(Game *game)
 {

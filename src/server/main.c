@@ -1,13 +1,18 @@
 #include "network/network.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>  //Header file for sleep(). man 3 sleep for details.
+#include <pthread.h>
+#include <arpa/inet.h> //close
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
+#include <errno.h>
+#include <string.h>
+#include <stdbool.h>
 
 #define MAX_PSEUDO_NAME 25
-
-typedef struct {
-    int id ;
-    char pseudo[MAX_PSEUDO_NAME] ;
-    int id_Game;
-}Client;
-
 
 int main(int argc, char** argv) {
     int sockfd = -1;

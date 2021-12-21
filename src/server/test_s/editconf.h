@@ -1,6 +1,7 @@
 #if !defined(EDIFCONF_H)
 #define EDIFCONF_H
 
+
 #define CLIENT_CONF_FILE "../../client/configuration/config.ini"
 #define SERVER_CONF_FILE "../../server/configuration/config.ini"
 #define ID_FILE "../../client/configuration/config.ini/.id"

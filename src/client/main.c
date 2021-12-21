@@ -8,13 +8,14 @@
  */
 
 #include <stdio.h>
-#include "../src/client/views/view.h"
+#include "views/view.h"
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
 #include "../common/protocol/protocol.h"
+
 
 #define PORT 8085
 #define MAX_SOCK_SIZE 1024

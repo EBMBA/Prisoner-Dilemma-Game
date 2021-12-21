@@ -1,10 +1,9 @@
-#include "player.h"
+/* #include "player.h"
 
-Player init_player(int id, char pseudo[MAX_PSEUDO_LENGHT]){
-    Player player;
+Player player;
 
+Player init_player(u_int16_t id, connection_t connection){
     player.id = id;
-    strcpy(player.pseudo, pseudo);
-
+    player.connection = connection;
     return player;
-}
+} */
