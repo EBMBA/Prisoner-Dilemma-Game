@@ -129,12 +129,11 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <signal name="clicked" handler="on_btnCooperate_clicked" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="Image coopérer">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="pixbuf">image/cooperate.png</property>
+                    <property name="pixbuf">../image/cooperate.png</property>
                   </object>
                 </child>
               </object>
@@ -152,7 +151,7 @@
                   <object class="GtkImage" id="Image trahir">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="pixbuf">image/betray.png</property>
+                    <property name="pixbuf">../image/betray.png</property>
                   </object>
                 </child>
               </object>
