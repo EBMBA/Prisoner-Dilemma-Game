@@ -1,4 +1,5 @@
 #include "network/network.h"
+#include <pthread.h>
 
 #define MAX_PSEUDO_NAME 25
 

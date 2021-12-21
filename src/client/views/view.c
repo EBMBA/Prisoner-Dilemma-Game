@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../src/client/views/view.h"
+#include "view.h"
 
 GtkWidget *window;
 GtkWidget *winJeu;
