@@ -9,11 +9,16 @@ char tmpBet[128];
 int bet=50;
 GtkWidget *labelPseudo;
 GtkWidget *labelBet;
+
 void init_main_window(int argc, char **argv)
 {
+    // const char * game_path = getenv( "PWD" );
+    // char path[128];
+    // strcpy(path, game_path);
+    // strcat(path, "/src/client/glade/Interface.glade");
     
     gtk_init(&argc, &argv);
-    GtkBuilder *builder = gtk_builder_new_from_file("/home/student/Documents/ICS/prisoner_dilemma/src/client/glade/Interface.glade");
+    GtkBuilder *builder = gtk_builder_new_from_file("src/client/glade/Interface.glade");
     window = GTK_WIDGET(gtk_builder_get_object(builder, "app_win"));
     g_signal_connect(G_OBJECT(window), "destroy",(GCallback) on_window_main_destroy, NULL); 
     gtk_builder_connect_signals(builder, NULL);
@@ -21,10 +26,16 @@ void init_main_window(int argc, char **argv)
     
     GtkWidget *buttonPlay;
     buttonPlay = GTK_WIDGET(gtk_builder_get_object(builder, "buttonPlay"));
-
 }
-void on_buttonPlay_clicked(GtkButton *b){
-    GtkBuilder *builderJeu = gtk_builder_new_from_file("/home/student/Documents/ICS/prisoner_dilemma/src/client/glade/InterfaceJeu1.glade");
+
+void on_buttonPlay_clicked(GtkButton *b)
+{
+    // const char * game_path = getenv( "PWD" );
+    // char path[128];
+    // strcpy(path, game_path);
+    // strcat(path, "/src/client/glade/InterfaceJeu1.glade");
+
+    GtkBuilder *builderJeu = gtk_builder_new_from_file("src/client/glade/InterfaceJeu1.glade");
     winJeu = GTK_WIDGET(gtk_builder_get_object(builderJeu, "app_jeu"));
     gtk_widget_show(winJeu);
     g_signal_connect(G_OBJECT(winJeu), "destroy",(GCallback) on_window_main_destroy, NULL);
@@ -43,11 +54,11 @@ void on_buttonPlay_clicked(GtkButton *b){
 void on_btnCooperate_clicked(GtkButton *b){
 }
 
-void on_entryPseudo_changed(GtkEntry *e){
+void on_entryPseudo_changed(GtkEntry *e)
+{
     sprintf(tmp,"%s, que décidez-vous de faire ?", gtk_entry_get_text(e));
     //gtk_label_set_text(GTK_LABEL(labelPseudo), (const gchar*) tmp);
     printf("%s", tmp);
-
 }
 
 void on_window_main_destroy()

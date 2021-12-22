@@ -99,5 +99,8 @@ run: all
 	./$(CLIENT_OUTPUTMAIN)
 	@echo Executing 'run: all' complete!
 
+runClient:
+	output/./client
+	
 documentation:
 	doxygen
