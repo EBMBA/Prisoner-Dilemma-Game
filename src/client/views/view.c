@@ -10,9 +10,13 @@ int bet=50;
 GtkWidget *labelPseudo;
 GtkWidget *labelBet;
 
+char pathEnv[128]="/home/student/Documents/prisoner_dilemma/";
+
 void init_main_window(int argc, char **argv)
 {
-    char path[128]="/home/student/Documents/prisoner_dilemma/src/client/glade/Interface.glade";
+    char path[128];
+    strcpy(path, pathEnv);
+    strcat(path, "src/client/glade/Interface.glade");
 
     gtk_init(&argc, &argv);
     GtkBuilder *builder = gtk_builder_new_from_file(path);
@@ -23,11 +27,13 @@ void init_main_window(int argc, char **argv)
     
     GtkWidget *buttonPlay;
     buttonPlay = GTK_WIDGET(gtk_builder_get_object(builder, "buttonPlay"));
-
 }
+
 void on_buttonPlay_clicked(GtkButton *b){
 
-    char path[128]="/home/student/Documents/prisoner_dilemma/src/client/glade/InterfaceJeu1.glade";
+    char path[128];
+    strcpy(path, pathEnv);
+    strcat(path, "src/client/glade/InterfaceJeu1.glade");
 
     GtkBuilder *builderJeu = gtk_builder_new_from_file(path);
     winJeu = GTK_WIDGET(gtk_builder_get_object(builderJeu, "app_jeu"));
