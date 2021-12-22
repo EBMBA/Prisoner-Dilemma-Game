@@ -9,11 +9,13 @@ char tmpBet[128];
 int bet=50;
 GtkWidget *labelPseudo;
 GtkWidget *labelBet;
+
 void init_main_window(int argc, char **argv)
 {
-    
+    char path[128]="/home/student/Documents/prisoner_dilemma/src/client/glade/Interface.glade";
+
     gtk_init(&argc, &argv);
-    GtkBuilder *builder = gtk_builder_new_from_file("/home/student/Documents/ICS/prisoner_dilemma/src/client/glade/Interface.glade");
+    GtkBuilder *builder = gtk_builder_new_from_file(path);
     window = GTK_WIDGET(gtk_builder_get_object(builder, "app_win"));
     g_signal_connect(G_OBJECT(window), "destroy",(GCallback) on_window_main_destroy, NULL); 
     gtk_builder_connect_signals(builder, NULL);
@@ -24,7 +26,10 @@ void init_main_window(int argc, char **argv)
 
 }
 void on_buttonPlay_clicked(GtkButton *b){
-    GtkBuilder *builderJeu = gtk_builder_new_from_file("/home/student/Documents/ICS/prisoner_dilemma/src/client/glade/InterfaceJeu1.glade");
+
+    char path[128]="/home/student/Documents/prisoner_dilemma/src/client/glade/InterfaceJeu1.glade";
+
+    GtkBuilder *builderJeu = gtk_builder_new_from_file(path);
     winJeu = GTK_WIDGET(gtk_builder_get_object(builderJeu, "app_jeu"));
     gtk_widget_show(winJeu);
     g_signal_connect(G_OBJECT(winJeu), "destroy",(GCallback) on_window_main_destroy, NULL);
