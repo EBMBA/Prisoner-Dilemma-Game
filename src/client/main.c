@@ -24,9 +24,9 @@ int main(int argc, char **argv)
 {
 	init_main_window(argc,argv);
 	gtk_main();
-	// int sock = 0, valread;
-	// struct sockaddr_in serv_addr;
-	// char *hello = NULL;
+	int sock = 0, valread;
+	struct sockaddr_in serv_addr;
+	char *hello = NULL;
 	// char bufferIn[MAX_SOCK_SIZE] = {0};
 	// char *bufferOut = NULL;
 	// packet packetd;
