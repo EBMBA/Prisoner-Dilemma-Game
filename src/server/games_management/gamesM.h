@@ -20,7 +20,7 @@ typedef struct
 void init_games_management();
 void add_game(Game game);
 Game *find_game(u_int16_t game_id);
-
+int remove_game(Game game);
 
 
 #endif // GAMESM_H
