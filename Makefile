@@ -92,15 +92,25 @@ clean:
 	$(RM) -R $(OUTPUT)
 	$(RM) $(call FIXPATH,$(CLIENT_OBJECTS))
 	$(RM) $(call FIXPATH,$(SERVER_OBJECTS))
-	@echo Cleanup complete!
+	@echo Cleanup complete !
 
 run: all
 	timeout 2 ./$(SERVER_OUTPUTMAIN)&
 	./$(CLIENT_OUTPUTMAIN)
-	@echo Executing 'run: all' complete!
+	@echo Executing 'run: all' complete !
 
 runClient:
 	output/./client
+	@echo Executing 'run: Client' complete !
+
+
+runServer:
+	output/./server
+	@echo Executing 'run: Server' complete !
+
 	
 documentation:
-	doxygen
+	-doxygen$(DOXYGENCONF)
+	@sleep 2
+	@xdg-open doc/html/index.html
+	@echo Create and Open 'documentation' complete !
