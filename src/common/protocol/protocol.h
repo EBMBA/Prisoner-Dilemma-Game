@@ -12,6 +12,7 @@
 #define NOT_YOUR_TURN 8
 #define YOUR_TURN 9
 #define UPDATE 10
+#define RESULTS 11
 
 #define WIN 1
 #define LOSE 2
