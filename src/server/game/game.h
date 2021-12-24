@@ -2,6 +2,10 @@
 #define GAME_H
 
 #include "../network/network.h"
+#include "../../common/protocol/protocol.h"
+
+#define P1_TURN 100
+#define P2_TURN 101
 
 typedef struct
 {
@@ -24,18 +28,9 @@ typedef struct
 Game *init_game(Game *game);
 Game *create_game(connection_t *player, Game *game);
 Game *join_game(connection_t * player, Game *game);
-void send_packet(Game *game);
+void send_packet(Game *game, int signal);
 Game *init_start_game(Game *game);
-
-/* void game_set_id(unsigned int id);
-void game_set_total_rounds(unsigned int rounds);
-void game_set_round_bet(unsigned int bet);
-void game_set_action(enum actions action);
-bool game_next_round(void);
-void game_set_player_reacttime(struct timeval round_start_time, struct timeval action_clicked_time); */
-/* Game *get_game(void);
-void set_game(Game *);
-void set_players_game(Game *game_g, Player player1, Player player2 ); */
-
+Game *update_game(Game *game, packet packetd);
+Game *calculate_result(Game *game);
 
 #endif

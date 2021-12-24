@@ -1,15 +1,24 @@
 #if !defined(PROTOCOL_H)
 #define PROTOCOL_H
 
-#define WAIT 0
-#define PLAY 1
-#define COOP 2
-#define BETRAY 3
-#define NO_RESPONSE 4
-#define FINISH 5
-#define START 6
-#define NOT_YOUR_TURN 7
-#define YOUR_TURN 8
+#define INIT 0
+#define WAIT 1
+#define PLAY 2
+#define COOP 3
+#define BETRAY 4
+#define NO_RESPONSE 5
+#define FINISH 6
+#define START 7
+#define NOT_YOUR_TURN 8
+#define YOUR_TURN 9
+#define UPDATE 10
+
+#define WIN 1
+#define LOSE 2
+
+#define WAITING_RESULT_TIME 3
+
+#define CLIENT_PATH "src/client/configuration/.id"
 
 typedef struct
 {
@@ -22,6 +31,7 @@ typedef struct
     u_int16_t time;
 } packet;
 
+packet *init_packet(packet *packetd, int client_OR_server);
 packet get_parse(char *bufferIn);
 char *set_parse(packet packetd);
 

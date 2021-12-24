@@ -6,7 +6,6 @@
 #include "gamesM.h"
 #include "../../common/protocol/protocol.h"
 
-
 GamesM gamesM;
 
 void init_games_management()
@@ -23,6 +22,7 @@ void add_game(Game game)
 
 Game *find_game(u_int16_t game_id)
 {
+    printf("Looking for a game\n");
     switch (game_id)
     {
     case 0:
@@ -30,7 +30,7 @@ Game *find_game(u_int16_t game_id)
         {
             if (gamesM.games[i].player2_action_id == WAIT)
             {
-                printf("Available game finded !\n");
+                printf("Available game finded ! Game id : %u\n", gamesM.games[i].id);
                 return &gamesM.games[i];
             }
         }
@@ -44,10 +44,13 @@ Game *find_game(u_int16_t game_id)
             if (gamesM.games[i].id == game_id)
             {
                 printf("Game finded !\n");
+                // TODO : update connection of player
                 return &gamesM.games[i];
             }
         }
-        
+
         break;
     }
+
+    return NULL;
 }
