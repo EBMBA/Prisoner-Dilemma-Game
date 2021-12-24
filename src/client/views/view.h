@@ -8,4 +8,6 @@ void init_main_window(int argc, char **argv);
 void on_window_main_destroy();
 void on_buttonPlay_clicked(GtkButton *b);
 void on_entryPseudo_changed(GtkEntry *e);
+int timer_handler();
+void on_btnCooperate_clicked(GtkButton *b);
 #endif

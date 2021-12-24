@@ -112,6 +112,7 @@
                 <property name="can-focus">True</property>
                 <property name="margin-left">20</property>
                 <property name="margin-bottom">20</property>
+                <signal name="changed" handler="on_entryPseudo_changed" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -119,11 +120,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="lblTime">
+              <object class="GtkLabel" id="time_display">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="margin-bottom">70</property>
-                <property name="label" translatable="yes">00:00</property>
+                <property name="label" translatable="yes">00</property>
                 <attributes>
                   <attribute name="font-desc" value="Sans 15"/>
                 </attributes>
