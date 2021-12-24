@@ -143,9 +143,7 @@ void *threadProcess(void *ptr) {
 
     while ((len = read(connection->sockfd, buffer_in, BUFFER_SIZE)) > 0) {
 
-        packet packetd = get_parse(buffer_in);
-
-        
+        packetd = get_parse(buffer_in);
 
         switch (packetd.action_id)
         {
@@ -162,16 +160,14 @@ void *threadProcess(void *ptr) {
                 // send message to player wait or play
                 game = init_start_game(game);
 
-                send_packet(game);
-                    //For player1
-                    
-                    
+                send_packet(game, START);
             }
-            
-            // TODO if he wasn't : check if there are a available game or create a new game 
             break;
         
         default:
+            game = find_game(packetd.game_id);
+            game = update_game(game,packetd);
+
             break;
         }
         

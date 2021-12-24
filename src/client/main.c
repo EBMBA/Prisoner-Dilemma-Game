@@ -3,7 +3,7 @@
  * @author KVEP - https://gitlab.com/kvep
  * @version 1.0
  * @date 2021-11-17
- * 
+ *
  * @copyright Copyright (c) 2021
  */
 
@@ -22,71 +22,108 @@
 
 int main(int argc, char **argv)
 {
-	init_main_window(argc,argv);
-	gtk_main();
-	int sock = 0, valread;
-	struct sockaddr_in serv_addr;
-	char *hello = NULL;
-	// char bufferIn[MAX_SOCK_SIZE] = {0};
-	// char *bufferOut = NULL;
-	// packet packetd;
+    init_main_window(argc,argv);
+    gtk_main();
+    int sock = 0, valread;
+    struct sockaddr_in serv_addr;
+    char *hello = NULL;
+    char bufferIn[MAX_SOCK_SIZE] = {0};
+    char *bufferOut = NULL;
 
-	// packetd.client_id = 0;
-    // packetd.game_id = 0;
-    // packetd.action_id = 0;
-    // packetd.result_id = 0;
-    // packetd.earned_money = 0;
-    // packetd.current_round = 0;
-	// packetd.
+    // Packet
+    packet *packetd;
 
-	//Get info from confile
+    packetd = init_packet(packetd, 0);
+    printf("\n Packet created \n");
+
+    printf("\n Packet full \n");
+
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    {
+        printf("\n Socket creation error \n");
+        return -1;
+    }
+
+    printf("\n Socket created \n");
+
     char *IP = NULL;
     IP = malloc(50 * sizeof(char));
-    readFile(CLIENT_CONF_FILE, "Serveur Configuration", "IP", &IP);
-    //printf("%s\n", IP);
+    printf("\n IP var created \n");
+    readFile("src/client/configuration/config.ini", "Serveur Configuration", "IP", &IP);
+    printf("Connection to : %s\n", IP);
 
     char *port = NULL;
     port = malloc(50 * sizeof(char));
-    readFile(CLIENT_CONF_FILE, "Serveur Configuration", "port", &port);
-    //printf("%s\n", port);
+    readFile("src/client/configuration/config.ini", "Serveur Configuration", "port", &port);
+    printf("On port : %s\n", port);
 
-	hello = malloc(100 * sizeof(char));
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons((u_int16_t)atoi(port));
 
-	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-	{
-		printf("\n Socket creation error \n");
-		return -1;
-	}
+    // Convert IPv4 and IPv6 addresses from text to binary form
+    if (inet_pton(AF_INET, IP, &serv_addr.sin_addr) <= 0)
+    {
+        printf("\nInvalid address/ Address not supported \n");
+        return -1;
+    }
 
-	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_port = htons(atoi(port));
-	
-	// Convert IPv4 and IPv6 addresses from text to binary form
-	if(inet_pton(AF_INET, IP, &serv_addr.sin_addr)<=0)
-	{
-		printf("\nInvalid address/ Address not supported \n");
-		return -1;
-	}
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    {
+        printf("\nConnection Failed \n");
+        return -1;
+    }
 
-	// if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
-	// {
-	// 	printf("\nConnection Failed \n");
-	// 	return -1;
-	// }
+    // Parse in bufferOut
+    bufferOut = set_parse(*packetd);
 
-	// // Parse in bufferOut
-	// bufferOut = set_parse(packetd);
+    send(sock, bufferOut, strlen(bufferOut), 0);
+    printf("Hello message sent\n");
 
-	// send(sock , bufferOut , strlen(bufferOut) , 0);
-	// printf("Hello message sent\n");
+    int i = 0;
 
-	// while (1)
-	// {
-	// 	valread = read( sock , bufferIn, MAX_SOCK_SIZE);
-	// 	printf("%s\n",bufferIn);
-	// }
-	
-	// valread = read( sock , buffer, MAX_SOCK_SIZE);
-	// printf("%s\n",buffer );
-	return 0;
+    printf("action : ");
+    scanf("%hu", &packetd->action_id);
+    printf("\n");
+
+    bufferOut = set_parse(*packetd);
+    send(sock, bufferOut, strlen(bufferOut), 0);
+
+    while (1)
+    {
+        valread = read(sock, bufferIn, MAX_SOCK_SIZE);
+        printf("%s\n", bufferIn);
+        *packetd = get_parse(bufferIn);
+        i++;
+
+        switch (packetd->action_id)
+        {
+        case YOUR_TURN:
+            printf("action : ");
+            scanf("%hu", &packetd->action_id);
+            printf("\n");
+
+            bufferOut = set_parse(*packetd);
+            send(sock, bufferOut, strlen(bufferOut), 0);
+            break;
+
+        case UPDATE:
+            switch (packetd->result_id)
+            {
+            case WIN:
+                printf("You win %u\n", packetd->earned_money);
+                break;
+
+            case LOSE:
+                printf("You lose %u\n", packetd->earned_money);
+                break;
+            default:
+                break;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    return 0;
 }

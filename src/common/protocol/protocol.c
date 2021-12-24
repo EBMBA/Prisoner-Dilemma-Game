@@ -5,21 +5,52 @@
 #include <errno.h>
 
 #include "protocol.h"
+#include "../utils/editconf.h"
+
+/**
+ * @brief Initialize packet
+ *
+ * @param packetd
+ * @param client_OR_server 0 for client or 1 for server
+ * @return packet*
+ */
+packet *init_packet(packet *packetd, int client_OR_server)
+{
+    packetd = malloc(sizeof(packet));
+
+    switch (client_OR_server)
+    {
+    case 0:
+        packetd->action_id = WAIT;
+        packetd->client_id = 0;
+        packetd->game_id = getID(CLIENT_PATH);
+        packetd->current_round = 0;
+        packetd->earned_money = 0;
+        packetd->result_id = 0;
+        packetd->time = 0;
+        break;
+
+    default:
+        break;
+    }
+
+    return packetd;
+}
 
 packet get_parse(char *bufferIn)
 {
     packet packetd;
     const char separator[2] = ";";
     char *token;
-    u_int16_t *tokenI = malloc(sizeof(packet)); 
-    int i = 0 ;
+    u_int16_t *tokenI = malloc(sizeof(packet));
+    int i = 0;
 
-    //printf("Protocol 1 \n");
-    // get the first token
+    // printf("Protocol 1 \n");
+    //  get the first token
     token = strtok(bufferIn, separator);
-    //printf("Protocol 2 \n");
-    //tokenI[0] = atoi(token);
-    //printf("Protocol 3 \n");
+    // printf("Protocol 2 \n");
+    // tokenI[0] = atoi(token);
+    // printf("Protocol 3 \n");
     /* walk through other tokens */
     while (token != NULL)
     {
@@ -28,7 +59,7 @@ packet get_parse(char *bufferIn)
         token = strtok(NULL, separator);
         i++;
     }
-    //printf("Protocol 4 \n");
+    // printf("Protocol 4 \n");
     packetd.client_id = tokenI[0];
     packetd.game_id = tokenI[1];
     packetd.action_id = tokenI[2];
@@ -44,7 +75,7 @@ packet get_parse(char *bufferIn)
 
 char *set_parse(packet packetd)
 {
-    //printf("Protocol 5 \n");
+    // printf("Protocol 5 \n");
     char *bufferOut = malloc(sizeof(packetd));
 
     sprintf(bufferOut, "%u;%u;%u;%u;%u;%u;%u",

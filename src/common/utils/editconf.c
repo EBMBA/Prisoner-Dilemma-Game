@@ -83,14 +83,14 @@ void readFile(char *file, char *section, char *field, char **param)
  * @brief get ID from ID_FILE
  * @return u_int16_t : ID 
  */
-u_int16_t getID()
+u_int16_t getID(char *id_path)
 {
     u_int16_t id;
     char text[128];
     char tmpc[2];
 
     FILE *fp;
-    fp = fopen(ID_FILE, "r");
+    fp = fopen(id_path, "r");
     if (fp == NULL)
     {
         errno = 2;
@@ -121,7 +121,7 @@ u_int16_t getID()
  * @param ID value to write in the ID_FILE
  * @return int : error code
  */
-int setID(u_int16_t ID)
+int setID(u_int16_t ID, char *id_path)
 {
     int ret = 0;
     FILE *fp;
@@ -137,7 +137,7 @@ int setID(u_int16_t ID)
         fprintf(fp, "%d", ID);
         fclose(fp);
 
-        u_int16_t verif = getID();
+        u_int16_t verif = getID(id_path);
         if (ID != verif)
         {
             ret = -1;
