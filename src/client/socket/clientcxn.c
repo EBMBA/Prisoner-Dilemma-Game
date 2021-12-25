@@ -75,5 +75,5 @@ void init_thread(int argc, char **argv){
     pthread_t thread;
 
     sockfd = open_connection();
-    init_main_window(argc,argv);
+    init_main_window(argc,argv, sockfd);
 }
