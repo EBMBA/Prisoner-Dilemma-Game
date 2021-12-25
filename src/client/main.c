@@ -14,6 +14,10 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
+
+// For clock()
+#include <time.h>
+
 #include "../common/protocol/protocol.h"
 #include "../common/utils/editconf.h"
 
@@ -29,6 +33,10 @@ int main(int argc, char **argv)
     char *hello = NULL;
     char bufferIn[MAX_SOCK_SIZE] = {0};
     char *bufferOut = NULL;
+
+    // For time 
+    clock_t start, end;
+    float time;
 
     // Packet
     packet *packetd;
@@ -103,9 +111,14 @@ int main(int argc, char **argv)
         switch (packetd->action_id)
         {
         case YOUR_TURN:
+            // start = clock();
             printf("action : ");
             scanf("%hu", &packetd->action_id);
             printf("\n");
+            // end = clock();
+
+            // time = (float) (start-end)/ CLOCKS_PER_SEC;
+            // printf("%f\n", time);
 
             bufferOut = set_parse(*packetd);
             send(sock, bufferOut, strlen(bufferOut), 0);
@@ -145,7 +158,7 @@ int main(int argc, char **argv)
             switch (packetd->result_id)
             {
             case WIN:
-                printf("You win %u\n", packetd->earned_money);
+                printf("You win %u\nAverage time : %u\n", packetd->earned_money, packetd->time);
 
                 // Put gameId to 0
                 setID(0, ID_FILE);
@@ -154,7 +167,7 @@ int main(int argc, char **argv)
                 break;
 
             case LOSE:
-                printf("You lose %u\n", packetd->earned_money);
+                printf("You lose %u\nAverage time : %u\n", packetd->earned_money, packetd->time);
 
                 // Put gameId to 0
                 setID(0, ID_FILE);
