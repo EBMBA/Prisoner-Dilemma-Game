@@ -22,8 +22,8 @@
 
 int main(int argc, char **argv)
 {
-    init_main_window(argc,argv);
-    gtk_main();
+    // init_main_window(argc,argv);
+    // gtk_main();
     int sock = 0, valread;
     struct sockaddr_in serv_addr;
     char *hello = NULL;
@@ -95,6 +95,11 @@ int main(int argc, char **argv)
         *packetd = get_parse(bufferIn);
         i++;
 
+        if (packetd->game_id != 0)
+        {
+            setID(packetd->game_id, ID_FILE);
+        }
+
         switch (packetd->action_id)
         {
         case YOUR_TURN:
@@ -120,10 +125,50 @@ int main(int argc, char **argv)
                 break;
             }
             break;
+        case FINISH:
+            printf("Last round\n");
+            switch (packetd->result_id)
+            {
+            case WIN:
+                printf("You win %u\n", packetd->earned_money);
+                break;
+
+            case LOSE:
+                printf("You lose %u\n", packetd->earned_money);
+                break;
+            default:
+                break;
+            }
+            break;
+        case RESULTS:
+            printf("Results time\n");
+            switch (packetd->result_id)
+            {
+            case WIN:
+                printf("You win %u\n", packetd->earned_money);
+
+                // Put gameId to 0
+                setID(0, ID_FILE);
+
+                exit(0);
+                break;
+
+            case LOSE:
+                printf("You lose %u\n", packetd->earned_money);
+
+                // Put gameId to 0
+                setID(0, ID_FILE);
+
+                exit(0);
+                break;
+            default:
+                break;
+            }
+            break;
         default:
             break;
         }
     }
 
-    return 0;
+    exit(0);
 }
