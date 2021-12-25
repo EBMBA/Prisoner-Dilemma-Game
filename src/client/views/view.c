@@ -120,8 +120,10 @@ void on_buttonPlay_clicked(GtkButton *b)
 void on_btnCooperate_clicked(GtkButton *b)
 {
 
+    
     if (packetd->action_id == YOUR_TURN)
     {
+        printf("%u", packetd->action_id);
         packetd->action_id = COOP;
         bufferOut = set_parse(*packetd);
         send(sock, bufferOut, strlen(bufferOut), 0);
