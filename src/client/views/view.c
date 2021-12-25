@@ -16,10 +16,10 @@ GtkBuilder *builderJeu = NULL;
 GtkWidget *window;
 GtkWidget *winJeu;
 char tmp[128];
-// char tmpBet[128];
+char tmpRes[128];
 // int bet=50;
 GtkWidget *labelPseudo;
-GtkWidget *labelBet;
+GtkWidget *labelResult;
 
 #define MAX_SOCK_SIZE 1024
 
@@ -77,7 +77,7 @@ void init_second_window()
         read(sock, bufferIn, MAX_SOCK_SIZE);
         printf("%s\n", bufferIn);
         *packetd = get_parse(bufferIn);
-
+        labelResult = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblResult"));
         switch (packetd->action_id)
         {
         case UPDATE:
@@ -86,6 +86,8 @@ void init_second_window()
             {
             case WIN:
                 // AFFICHER MESSAGE WIN
+                sprintf(tmpRes, "Vous avez gagnez : %u€", packetd->earned_money );
+                gtk_label_set_text(GTK_LABEL(labelResult), (const gchar* ) tmpRes);
                 break;
             case LOSE:
                 // AFFICHER LOSE
