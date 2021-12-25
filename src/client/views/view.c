@@ -8,6 +8,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "view.h"
+
+#include "../../common/utils/editconf.h"
 #include "../../common/protocol/protocol.h"
 GtkBuilder *builder = NULL;
 GtkBuilder *builderJeu = NULL;
@@ -70,75 +72,140 @@ void init_second_window()
     labelPseudo = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblPseudoDisplay"));
     gtk_label_set_text(GTK_LABEL(labelPseudo), (const gchar *)tmp);
 
-    // labelBet = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblBet"));
-    // sprintf(tmpBet, "Il y'a %d€ en jeu", packetd.);
-    // gtk_label_set_text(GTK_LABEL(labelBet), (const gchar* ) tmpBet);
-}
-
-int timer_handler()
-{
-    elapsed_time++;
-    char txt[100];
-    // printf("timer running, time : %d\n", elapsed_time);
-    GtkLabel *timelabel = GTK_LABEL(gtk_builder_get_object(builder, "time_display"));
-    snprintf(txt, 100, "%04i", elapsed_time);
-    gtk_label_set_text(timelabel, txt);
-    return 1;
-}
-
-void on_buttonPlay_clicked(GtkButton *b)
-{
-    // const char * game_path = getenv( "PWD" );
-    // char path[128];
-    // strcpy(path, game_path);
-    // strcat(path, "/src/client/glade/InterfaceJeu1.glade");
-
-    if (timer_id == 0)
+    while (1)
     {
-        timer_id = g_timeout_add(1000, (GSourceFunc)timer_handler, NULL);
+        read(sock, bufferIn, MAX_SOCK_SIZE);
+        printf("%s\n", bufferIn);
+        *packetd = get_parse(bufferIn);
+
+        switch (packetd->action_id)
+        {
+        case UPDATE:
+            // TODO METTRE MESSAGE WIN/LOSE et EARNED MONEY
+            switch (packetd->result_id)
+            {
+            case WIN:
+                // AFFICHER MESSAGE WIN
+                break;
+            case LOSE:
+                // AFFICHER LOSE
+                break;
+            default:
+                break;
+            }
+            break;
+        case FINISH:
+           //Last round;
+            switch (packetd->result_id)
+            {
+            case WIN:
+                
+                break;
+
+            case LOSE:
+
+                break;
+            default:
+                break;
+            }
+            break;
+        case RESULTS:
+
+            switch (packetd->result_id)
+            {
+            case WIN:
+
+                // Put gameId to 0
+                setID(0, ID_FILE);
+
+                exit(0);
+                break;
+
+            case LOSE:
+
+                // Put gameId to 0
+                setID(0, ID_FILE);
+
+                exit(0);
+                break;
+            default:
+                break;
+            }
+            break;
+        default:
+            break;
+        }
+
+        // labelBet = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblBet"));
+        // sprintf(tmpBet, "Il y'a %d€ en jeu", packetd.);
+        // gtk_label_set_text(GTK_LABEL(labelBet), (const gchar* ) tmpBet);
     }
-    else
+
+    int timer_handler()
     {
-        g_source_remove(timer_id);
-        timer_id = 0;
+        elapsed_time++;
+        char txt[100];
+        // printf("timer running, time : %d\n", elapsed_time);
+        GtkLabel *timelabel = GTK_LABEL(gtk_builder_get_object(builder, "time_display"));
+        snprintf(txt, 100, "%04i", elapsed_time);
+        gtk_label_set_text(timelabel, txt);
+        return 1;
     }
 
-    packetd->action_id = PLAY;
-    bufferOut = set_parse(*packetd);
-    send(sock, bufferOut, strlen(bufferOut), 0);
-
-    read(sock, bufferIn, MAX_SOCK_SIZE);
-    printf("%s\n", bufferIn);
-    *packetd = get_parse(bufferIn);
-
-    if (packetd->action_id == YOUR_TURN || packetd->action_id == NOT_YOUR_TURN)
+    void on_buttonPlay_clicked(GtkButton * b)
     {
-        init_second_window();
+        // const char * game_path = getenv( "PWD" );
+        // char path[128];
+        // strcpy(path, game_path);
+        // strcat(path, "/src/client/glade/InterfaceJeu1.glade");
+
+        if (timer_id == 0)
+        {
+            timer_id = g_timeout_add(1000, (GSourceFunc)timer_handler, NULL);
+        }
+        else
+        {
+            g_source_remove(timer_id);
+            timer_id = 0;
+        }
+
+        packetd->action_id = PLAY;
+        bufferOut = set_parse(*packetd);
+        send(sock, bufferOut, strlen(bufferOut), 0);
+
+        read(sock, bufferIn, MAX_SOCK_SIZE);
+        printf("%s\n", bufferIn);
+        *packetd = get_parse(bufferIn);
+
+        if (packetd->action_id == YOUR_TURN || packetd->action_id == NOT_YOUR_TURN)
+        {
+            init_second_window();
+        }
     }
-}
 
-void on_btnCooperate_clicked(GtkButton *b)
-{
-
-    
-    if (packetd->action_id == YOUR_TURN)
+    void on_btnCooperate_clicked(GtkButton * b)
     {
-        printf("%u", packetd->action_id);
+
+        if (packetd->action_id == YOUR_TURN)
+        {
+            packetd->action_id = COOP;
+            bufferOut = set_parse(*packetd);
+            send(sock, bufferOut, strlen(bufferOut), 0);
+        }
+    }
+    void on_btnBetray_clicked(GtkButton * b)
+    {
         packetd->action_id = COOP;
         bufferOut = set_parse(*packetd);
         send(sock, bufferOut, strlen(bufferOut), 0);
     }
-}
-void on_btnBetray_clicked(GtkButton *b)
-{
-}
-void on_entryPseudo_changed(GtkEntry *e)
-{
-    sprintf(tmp, "%s, que décidez-vous de faire ?", gtk_entry_get_text(e));
-    // gtk_label_set_text(GTK_LABEL(labelPseudo), (const gchar*) tmp);
-}
+    void on_entryPseudo_changed(GtkEntry * e)
+    {
+        sprintf(tmp, "%s, que décidez-vous de faire ?", gtk_entry_get_text(e));
+        // gtk_label_set_text(GTK_LABEL(labelPseudo), (const gchar*) tmp);
+    }
 
-void on_window_main_destroy()
-{
-    gtk_main_quit();
-}
+    void on_window_main_destroy()
+    {
+        gtk_main_quit();
+    }
