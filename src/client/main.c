@@ -16,17 +16,18 @@
 #include <string.h>
 #include "../common/protocol/protocol.h"
 #include "../common/utils/editconf.h"
+#include "socket/clientcxn.h"
 
 //#define PORT 8085
 #define MAX_SOCK_SIZE 1024
 
 int main(int argc, char **argv)
 {
-    // init_main_window(argc,argv);
-    // gtk_main();
+    init_thread(argc, argv);
+    
     int sock = 0, valread;
     struct sockaddr_in serv_addr;
-    char *hello = NULL;
+    
     char bufferIn[MAX_SOCK_SIZE] = {0};
     char *bufferOut = NULL;
 
@@ -45,27 +46,6 @@ int main(int argc, char **argv)
     }
 
     printf("\n Socket created \n");
-
-    char *IP = NULL;
-    IP = malloc(50 * sizeof(char));
-    printf("\n IP var created \n");
-    readFile("src/client/configuration/config.ini", "Serveur Configuration", "IP", &IP);
-    printf("Connection to : %s\n", IP);
-
-    char *port = NULL;
-    port = malloc(50 * sizeof(char));
-    readFile("src/client/configuration/config.ini", "Serveur Configuration", "port", &port);
-    printf("On port : %s\n", port);
-
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons((u_int16_t)atoi(port));
-
-    // Convert IPv4 and IPv6 addresses from text to binary form
-    if (inet_pton(AF_INET, IP, &serv_addr.sin_addr) <= 0)
-    {
-        printf("\nInvalid address/ Address not supported \n");
-        return -1;
-    }
 
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
@@ -115,11 +95,11 @@ int main(int argc, char **argv)
             switch (packetd->result_id)
             {
             case WIN:
-                printf("You win %u\n", packetd->earned_money);
+                printf("You win this round %u\n", packetd->earned_money);
                 break;
 
             case LOSE:
-                printf("You lose %u\n", packetd->earned_money);
+                printf("You lose this round %u\n", packetd->earned_money);
                 break;
             default:
                 break;
