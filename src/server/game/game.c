@@ -191,7 +191,7 @@ void send_packet(Game *game, int signal)
         printf("NOT YOUR TURN Packet for P2 sended\n");
         break;
 
-    case FINISH: // TODO handle game finish sended results...
+    case FINISH: //  handle game finish sended results...
         packetdP1.action_id = FINISH;
         packetdP1.client_id = (u_int16_t)game->player1->index;
         packetdP1.game_id = game->id;
@@ -217,7 +217,7 @@ void send_packet(Game *game, int signal)
         printf("FINISH Packet for P2 sended\n");
         break;
 
-    case RESULTS:
+    case RESULTS: // Send final results 
         packetdP1.action_id = RESULTS;
         packetdP1.client_id = (u_int16_t)game->player1->index;
         packetdP1.game_id = game->id;
@@ -293,7 +293,7 @@ Game *update_game(Game *game, packet packetd)
 
             // TODO export results on CSV
 
-            // TODO remove the game of the game_management
+            // remove the game of the game_management
             remove_game(*game);
         }
     }
