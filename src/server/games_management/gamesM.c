@@ -42,7 +42,7 @@ int remove_game(Game game)
             gamesM.games[i].player2_result_id = 0;
             gamesM.games[i].player2_average_time = 0;
             gamesM.games[i].player2_total_earned = 0;
-            
+
             return 0;
         }
     }
@@ -74,7 +74,7 @@ Game *find_game(u_int16_t game_id)
             if (gamesM.games[i].id == game_id)
             {
                 printf("Game finded !\n");
-                // TODO : update connection of player
+                
                 return &gamesM.games[i];
             }
         }
@@ -83,4 +83,52 @@ Game *find_game(u_int16_t game_id)
     }
 
     return NULL;
+}
+
+void update_player(u_int16_t game_id, connection_t *player)
+{
+    //  update connection of player
+    Game *game = find_game(game_id);
+    packet packetd;
+    char *buffer_out;
+
+    for (int i = 0; i < 100; i++)
+    {
+        if (gamesM.games[i].id == game_id)
+        {
+            if (gamesM.games[i].player1 == NULL)
+            {
+                gamesM.games[i].player1 = player;
+
+                // Send current
+                packetd.action_id = game->player1_action_id;
+                packetd.client_id = (u_int16_t)game->player1->index;
+                packetd.game_id = game->id;
+                packetd.current_round = game->current_round;
+                packetd.earned_money = INIT;
+                packetd.result_id = INIT;
+                packetd.time = INIT;
+
+                buffer_out = set_parse(packetd);
+                write(game->player1->sockfd, buffer_out, strlen(buffer_out));
+                printf("CURRENT STATUS Packet for P1 sended\n");
+            }
+            else
+            {
+                gamesM.games[i].player2 = player;
+
+                packetd.action_id = game->player1_action_id;
+                packetd.client_id = (u_int16_t)game->player2->index;
+                packetd.game_id = game->id;
+                packetd.current_round = game->current_round;
+                packetd.earned_money = INIT;
+                packetd.result_id = INIT;
+                packetd.time = INIT;
+
+                buffer_out = set_parse(packetd);
+                write(game->player2->sockfd, buffer_out, strlen(buffer_out));
+                printf("CURRENT STATUS Packet for P2 sended\n");
+            }
+        }
+    }
 }

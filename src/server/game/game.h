@@ -6,6 +6,7 @@
 
 #define P1_TURN 100
 #define P2_TURN 101
+#define CURRENT_STATUS 103
 
 typedef struct
 {
