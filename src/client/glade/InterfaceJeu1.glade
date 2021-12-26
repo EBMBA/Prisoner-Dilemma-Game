@@ -75,12 +75,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="lblBet">
+              <object class="GtkLabel" id="lblResult">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="margin-left">65</property>
                 <property name="margin-bottom">70</property>
-                <property name="label" translatable="yes">Il y a 500€ en jeu dans ce round.</property>
+                <property name="label" translatable="yes">Resultat</property>
                 <attributes>
                   <attribute name="font-desc" value="Sans 15"/>
                 </attributes>

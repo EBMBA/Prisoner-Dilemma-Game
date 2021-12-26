@@ -7,10 +7,14 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <pthread.h>
+
 #include "view.h"
 
 #include "../../common/utils/editconf.h"
 #include "../../common/protocol/protocol.h"
+#include "../socket/clientcxn.h"
+
 GtkBuilder *builder = NULL;
 GtkBuilder *builderJeu = NULL;
 GtkWidget *window;
@@ -73,18 +77,9 @@ void init_second_window()
     labelPseudo = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblPseudoDisplay"));
     gtk_label_set_text(GTK_LABEL(labelPseudo), (const gchar *)tmp);
 
-    labelResult = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblResult"));
-
-    read(sock, bufferIn, MAX_SOCK_SIZE);
-    printf("%s\n", bufferIn);
-    *packetd = get_parse(bufferIn);
-
-    if (packetd->action_id == NOT_YOUR_TURN)
-    {
-        read(sock, bufferIn, MAX_SOCK_SIZE);
-        printf("%s\n", bufferIn);
-        *packetd = get_parse(bufferIn);
-    }
+    pthread_t thread;
+    pthread_create(&thread, 0, threadProcess, &sock);
+    pthread_detach(thread);
 
     // labelBet = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblBet"));
     // sprintf(tmpBet, "Il y'a %d€ en jeu", packetd.);
@@ -141,72 +136,6 @@ void on_btnCooperate_clicked(GtkButton *b)
         packetd->action_id = COOP;
         bufferOut = set_parse(*packetd);
         send(sock, bufferOut, strlen(bufferOut), 0);
-
-        read(sock, bufferIn, MAX_SOCK_SIZE);
-
-        read(sock, bufferIn, MAX_SOCK_SIZE);
-        printf("%s\n", bufferIn);
-        *packetd = get_parse(bufferIn);
-        labelResult = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblResult"));
-        switch (packetd->action_id)
-        {
-        case UPDATE:
-            // TODO METTRE MESSAGE WIN/LOSE et EARNED MONEY
-            switch (packetd->result_id)
-            {
-            case WIN:
-                // AFFICHER MESSAGE WIN
-                sprintf(tmpRes, "Vous avez gagnez : %u€", packetd->earned_money);
-                gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
-                break;
-            case LOSE:
-                // AFFICHER LOSE
-                break;
-            default:
-                break;
-            }
-            break;
-        case FINISH:
-            // Last round;
-            switch (packetd->result_id)
-            {
-            case WIN:
-
-                break;
-
-            case LOSE:
-
-                break;
-            default:
-                break;
-            }
-            break;
-        case RESULTS:
-
-            switch (packetd->result_id)
-            {
-            case WIN:
-
-                // Put gameId to 0
-                setID(0, ID_FILE);
-
-                exit(0);
-                break;
-
-            case LOSE:
-
-                // Put gameId to 0
-                setID(0, ID_FILE);
-
-                exit(0);
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
-        }
     }
 }
 void on_btnBetray_clicked(GtkButton *b)
@@ -227,4 +156,104 @@ void on_entryPseudo_changed(GtkEntry *e)
 void on_window_main_destroy()
 {
     gtk_main_quit();
+}
+
+void update_view(packet packetReceived)
+{
+    packetd->action_id = packetReceived.action_id;
+    packetd->client_id = packetReceived.client_id;
+    packetd->current_round = packetReceived.current_round;
+    packetd->earned_money = packetReceived.earned_money;
+    packetd->game_id = packetReceived.game_id;
+    packetd->result_id = packetReceived.result_id;
+    packetd->time = packetReceived.time;
+
+    GtkButton *coopButton = GTK_BUTTON(gtk_builder_get_object(builderJeu, "btnCooperate"));
+    GtkButton *betrayButton = GTK_BUTTON(gtk_builder_get_object(builderJeu, "btnBetray"));
+
+    labelResult = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblResult"));
+    switch (packetd->action_id)
+    {
+    case NOT_YOUR_TURN:
+        sprintf(tmpRes, "Pas votre tour");
+        gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
+        gtk_widget_hide(GTK_WIDGET(coopButton));
+        gtk_widget_hide(GTK_WIDGET(betrayButton));
+        break;
+    case YOUR_TURN:
+        sprintf(tmpRes, "Votre tour");
+        gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
+        gtk_widget_show(GTK_WIDGET(coopButton));
+        gtk_widget_show(GTK_WIDGET(betrayButton));
+        break;
+    case UPDATE:
+        gtk_widget_hide(GTK_WIDGET(coopButton));
+        gtk_widget_hide(GTK_WIDGET(betrayButton));
+        // TODO METTRE MESSAGE WIN/LOSE et EARNED MONEY
+        switch (packetd->result_id)
+        {
+        case WIN:
+            // AFFICHER MESSAGE WIN
+            sprintf(tmpRes, "Vous avez gagnez : %u€", packetd->earned_money);
+            gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
+            break;
+        case LOSE:
+            // AFFICHER LOSE
+            sprintf(tmpRes, "Vous avez perdu");
+            gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
+            break;
+        default:
+            break;
+        }
+        break;
+    case FINISH:
+        gtk_widget_hide(GTK_WIDGET(coopButton));
+        gtk_widget_hide(GTK_WIDGET(betrayButton));
+        // Last round;
+        switch (packetd->result_id)
+        {
+        case WIN:
+            sprintf(tmpRes, "Dernier tour, vous avez gagnez : %u€", packetd->earned_money);
+            gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
+            break;
+
+        case LOSE:
+            sprintf(tmpRes, "Dernier tour, vous avez perdu");
+            gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
+            break;
+        default:
+            break;
+        }
+        break;
+    case RESULTS:
+        gtk_widget_hide(GTK_WIDGET(coopButton));
+        gtk_widget_hide(GTK_WIDGET(betrayButton));
+        switch (packetd->result_id)
+        {
+        case WIN:
+            sprintf(tmpRes, "Vous avez gagnez la partie avec %u€", packetd->earned_money);
+            gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
+            // Put gameId to 0
+            setID(0, ID_FILE);
+            break;
+
+        case LOSE:
+            sprintf(tmpRes, "Vous avez perdu la partie avec %u€", packetd->earned_money);
+            gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
+            // Put gameId to 0
+            setID(0, ID_FILE);
+            break;
+        default:
+            break;
+        }
+        
+        // wait 10 secondes to show results 
+        sleep(10);
+
+        close(sock);
+        exit(0);
+        break;
+    default:
+        break;
+    }
 }

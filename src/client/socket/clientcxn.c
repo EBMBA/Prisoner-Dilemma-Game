@@ -20,13 +20,14 @@ void *threadProcess(void * ptr) {
             break;
         }
 
-        packet *packetd;
-        set_parse(*packetd);
-        printf("receive %d chars\n", len);
-        printf("%.*s\n", len, buffer_in);
+        packet packetd;
+        packetd = get_parse(buffer_in);
+        
+        update_view(packetd);
     }
-    close(sockfd);
-    printf("client pthread ended, len=%d\n", len);
+
+    // a deplacer pourafficher la derniere fenetre des resultats
+    //close(sockfd);
 }
 
 int open_connection() {
