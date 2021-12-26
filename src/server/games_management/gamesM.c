@@ -1,3 +1,12 @@
+/**
+ * @file gamesM.c
+ * @author KVEP - https://gitlab.com/kvep/
+ * @version 1.0
+ * @date 2021-12-03
+ * 
+ * @copyright Copyright (c) 2021 KVEP
+ */
+
 #include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -8,11 +17,18 @@
 
 GamesM gamesM;
 
+/**
+ * @brief initialise the structure "gamesM"
+ */
 void init_games_management()
 {
     gamesM.index = 0;
 }
 
+/**
+ * @brief add game in a structure "gamesM"
+ * @param game game to add in structure
+ */
 void add_game(Game game)
 {
     gamesM.games[gamesM.index] = game;
@@ -20,13 +36,18 @@ void add_game(Game game)
     printf("Game added !\n");
 }
 
+/**
+ * @brief remove game from the structure
+ * @param game game to remove 
+ * @return int : code
+ */
 int remove_game(Game game)
 {
     for (int i = 0; i < 100; i++)
     {
         if (gamesM.games[i].id == game.id)
         {
-            printf("Game finded and removed! Game id : %u\n", gamesM.games[i].id);
+            printf("Game finded and removed !\nGame id : %u\n", gamesM.games[i].id);
             gamesM.games[i].player1 = NULL;
             gamesM.games[i].player1_action_id = INIT;
             gamesM.games[i].player1_earned_money = 0;
@@ -50,6 +71,11 @@ int remove_game(Game game)
     return 1;
 }
 
+/**
+ * @brief search a game in the structure 
+ * @param game_id ID of the game to search
+ * @return Game* : game found
+ */
 Game *find_game(u_int16_t game_id)
 {
     printf("Looking for a game\n");
@@ -60,7 +86,7 @@ Game *find_game(u_int16_t game_id)
         {
             if (gamesM.games[i].player2_action_id == WAIT)
             {
-                printf("Available game finded ! Game id : %u\n", gamesM.games[i].id);
+                printf("Available game finded !\nGame id : %u\n", gamesM.games[i].id);
                 return &gamesM.games[i];
             }
         }

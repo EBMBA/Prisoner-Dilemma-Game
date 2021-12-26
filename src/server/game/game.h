@@ -1,3 +1,12 @@
+/**
+ * @file game.h
+ * @author KVEP - https://gitlab.com/kvep/
+ * @version 1.0
+ * @date 2021-12-03
+ * 
+ * @copyright Copyright (c) 2021 KVEP
+ */
+
 #ifndef GAME_H
 #define GAME_H
 
@@ -8,6 +17,9 @@
 #define P2_TURN 101
 #define CURRENT_STATUS 103
 
+/**
+ * @brief structure "Game" containing all the information needed for the game process.
+ */
 typedef struct
 {
     u_int16_t id;

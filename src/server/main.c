@@ -1,3 +1,12 @@
+/**
+ * @file main.c
+ * @author KVEP - https://gitlab.com/kvep/
+ * @version 1.0
+ * @date 2021-11-17
+ * 
+ * @copyright Copyright (c) 2021 KVEP
+ */
+
 #include "network/network.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,6 +25,12 @@
 
 #define MAX_PSEUDO_NAME 25
 
+/**
+ * @brief start the server and wait for client connection
+ * @param argc nothing
+ * @param argv nothing
+ * @return int : code
+ */
 int main(int argc, char** argv) {
     int sockfd = -1;
     int index = 1;

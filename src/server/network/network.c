@@ -1,3 +1,12 @@
+/**
+ * @file network.c
+ * @author KVEP - https://gitlab.com/kvep/
+ * @version 1.0
+ * @date 2021-12-03
+ * 
+ * @copyright Copyright (c) 2021 KVEP
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>  //Header file for sleep(). man 3 sleep for details.
@@ -19,13 +28,19 @@
 
 connection_t* connections[MAX_SIMULTANEOUS_CONNECTIONS];
 
+/**
+ * @brief initialise array "connections" containing client connection
+ */
 void init_sockets_array() {
     for (int i = 0; i < MAX_SIMULTANEOUS_CONNECTIONS; i++) {
         connections[i] = NULL;
     }
 }
 
-
+/**
+ * @brief add connection in the array
+ * @param connection connection to add in the array
+ */
 void add(connection_t *connection) {
     for (int i = 0; i < MAX_SIMULTANEOUS_CONNECTIONS; i++) {
         if (connections[i] == NULL) {
@@ -37,6 +52,10 @@ void add(connection_t *connection) {
     exit(-5);
 }
 
+/**
+ * @brief delete connection from the array
+ * @param connection connection to delete 
+ */
 void del(connection_t *connection) {
     for (int i = 0; i < MAX_SIMULTANEOUS_CONNECTIONS; i++) {
         if (connections[i] == connection) {
@@ -48,6 +67,10 @@ void del(connection_t *connection) {
     exit(-5);
 }
 
+/**
+ * @brief Create a server socket object
+ * @return int : listen socket 
+ */
 int create_server_socket() {
     int sockfd = -1;
     struct sockaddr_in address;
@@ -102,9 +125,9 @@ void *myThread(void *vargp, int *master_socket)
 
 
 /**
- * Thread allowing server to handle multiple client connections
- * @param ptr connection_t 
- * @return 
+ * @brief thread allowing server to handle multiple client connections
+ * @param ptr connection structure
+ * @return void* : nothing
  */
 void *threadProcess(void *ptr) {
     char buffer_in[BUFFER_SIZE];

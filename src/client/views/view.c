@@ -1,3 +1,12 @@
+/**
+ * @file view.c
+ * @author KVEP - https://gitlab.com/kvep/
+ * @version 1.0
+ * @date 2021-11-17
+ * 
+ * @copyright Copyright (c) 2021 KVEP
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <arpa/inet.h> //close
@@ -41,6 +50,12 @@ int sock = 0;
 pthread_t thread;
 int second_window = 0;
 
+/**
+ * @brief start and displays the first graphic window (homepage window)
+ * @param argc nothing
+ * @param argv nothing
+ * @param sockfd connection socket
+ */
 void init_main_window(int argc, char **argv, int sockfd)
 {
     gtk_init(&argc, &argv);
@@ -66,6 +81,10 @@ void init_main_window(int argc, char **argv, int sockfd)
     gtk_main();
 }
 
+/**
+ * @brief start and displays the game graphic window, same for each round during game.
+ * This window contain both choices (betray or coop) 
+ */
 void init_second_window()
 {
     builderJeu = gtk_builder_new_from_file("src/client/glade/InterfaceJeu1.glade");
@@ -109,6 +128,10 @@ void init_second_window()
 
 }
 
+/**
+ * @brief function to update timer of client
+ * @return int : code
+ */
 int timer_handler()
 {
     if (packetd->action_id == YOUR_TURN)
@@ -134,6 +157,10 @@ int timer_handler()
     return 1;
 }
 
+/**
+ * @brief when the 'play' button is clicked this function close the first graphic window and open the second
+ * @param b gtk button 
+ */
 void on_buttonPlay_clicked(GtkButton *b)
 {
     if (timer_id == 0)
@@ -159,6 +186,10 @@ void on_buttonPlay_clicked(GtkButton *b)
     }
 }
 
+/**
+ * @brief send the choice (cooperate) to the server 
+ * @param b gtk button
+ */
 void on_btnCooperate_clicked(GtkButton *b)
 {
 
@@ -174,6 +205,11 @@ void on_btnCooperate_clicked(GtkButton *b)
         //  elapsed_time = TIME_FOR_ROUND;
     }
 }
+
+/**
+ * @brief send the choice (betray) to the server
+ * @param b gtk button
+ */
 void on_btnBetray_clicked(GtkButton *b)
 {
     if (packetd->action_id == YOUR_TURN)
@@ -187,17 +223,29 @@ void on_btnBetray_clicked(GtkButton *b)
         // elapsed_time = TIME_FOR_ROUND;
     }
 }
+
+/**
+ * @brief create temp variable with the pseudo choose in the first window
+ * @param e pseudo
+ */
 void on_entryPseudo_changed(GtkEntry *e)
 {
     sprintf(tmp, "%s, que décidez-vous de faire ?", gtk_entry_get_text(e));
     // gtk_label_set_text(GTK_LABEL(labelPseudo), (const gchar*) tmp);
 }
 
+/**
+ * @brief close the gtk window
+ */
 void on_window_main_destroy()
 {
     gtk_main_quit();
 }
 
+/**
+ * @brief update graphic window during all the game
+ * @param packetReceived packet delivered by the server with all information
+ */
 void update_view(packet packetReceived)
 {
     packetd->action_id = packetReceived.action_id;
