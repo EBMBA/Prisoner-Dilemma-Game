@@ -67,81 +67,28 @@ void init_second_window()
     winJeu = GTK_WIDGET(gtk_builder_get_object(builderJeu, "app_jeu"));
     gtk_widget_show(winJeu);
     g_signal_connect(G_OBJECT(winJeu), "destroy", (GCallback)on_window_main_destroy, NULL);
+    gtk_builder_connect_signals(builderJeu, NULL);
     gtk_widget_hide(window);
 
     labelPseudo = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblPseudoDisplay"));
     gtk_label_set_text(GTK_LABEL(labelPseudo), (const gchar *)tmp);
 
-    while (1)
+    labelResult = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblResult"));
+
+    read(sock, bufferIn, MAX_SOCK_SIZE);
+    printf("%s\n", bufferIn);
+    *packetd = get_parse(bufferIn);
+
+    if (packetd->action_id == NOT_YOUR_TURN)
     {
         read(sock, bufferIn, MAX_SOCK_SIZE);
         printf("%s\n", bufferIn);
         *packetd = get_parse(bufferIn);
-        labelResult = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblResult"));
-        switch (packetd->action_id)
-        {
-        case UPDATE:
-            // TODO METTRE MESSAGE WIN/LOSE et EARNED MONEY
-            switch (packetd->result_id)
-            {
-            case WIN:
-                // AFFICHER MESSAGE WIN
-                sprintf(tmpRes, "Vous avez gagnez : %u€", packetd->earned_money );
-                gtk_label_set_text(GTK_LABEL(labelResult), (const gchar* ) tmpRes);
-                break;
-            case LOSE:
-                // AFFICHER LOSE
-                break;
-            default:
-                break;
-            }
-            break;
-        case FINISH:
-            // Last round;
-            switch (packetd->result_id)
-            {
-            case WIN:
-
-                break;
-
-            case LOSE:
-
-                break;
-            default:
-                break;
-            }
-            break;
-        case RESULTS:
-
-            switch (packetd->result_id)
-            {
-            case WIN:
-
-                // Put gameId to 0
-                setID(0, ID_FILE);
-
-                exit(0);
-                break;
-
-            case LOSE:
-
-                // Put gameId to 0
-                setID(0, ID_FILE);
-
-                exit(0);
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
-        }
-
-        // labelBet = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblBet"));
-        // sprintf(tmpBet, "Il y'a %d€ en jeu", packetd.);
-        // gtk_label_set_text(GTK_LABEL(labelBet), (const gchar* ) tmpBet);
     }
+
+    // labelBet = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblBet"));
+    // sprintf(tmpBet, "Il y'a %d€ en jeu", packetd.);
+    // gtk_label_set_text(GTK_LABEL(labelBet), (const gchar* ) tmpBet);
 }
 
 int timer_handler()
@@ -194,10 +141,82 @@ void on_btnCooperate_clicked(GtkButton *b)
         packetd->action_id = COOP;
         bufferOut = set_parse(*packetd);
         send(sock, bufferOut, strlen(bufferOut), 0);
+
+        read(sock, bufferIn, MAX_SOCK_SIZE);
+
+        read(sock, bufferIn, MAX_SOCK_SIZE);
+        printf("%s\n", bufferIn);
+        *packetd = get_parse(bufferIn);
+        labelResult = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblResult"));
+        switch (packetd->action_id)
+        {
+        case UPDATE:
+            // TODO METTRE MESSAGE WIN/LOSE et EARNED MONEY
+            switch (packetd->result_id)
+            {
+            case WIN:
+                // AFFICHER MESSAGE WIN
+                sprintf(tmpRes, "Vous avez gagnez : %u€", packetd->earned_money);
+                gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
+                break;
+            case LOSE:
+                // AFFICHER LOSE
+                break;
+            default:
+                break;
+            }
+            break;
+        case FINISH:
+            // Last round;
+            switch (packetd->result_id)
+            {
+            case WIN:
+
+                break;
+
+            case LOSE:
+
+                break;
+            default:
+                break;
+            }
+            break;
+        case RESULTS:
+
+            switch (packetd->result_id)
+            {
+            case WIN:
+
+                // Put gameId to 0
+                setID(0, ID_FILE);
+
+                exit(0);
+                break;
+
+            case LOSE:
+
+                // Put gameId to 0
+                setID(0, ID_FILE);
+
+                exit(0);
+                break;
+            default:
+                break;
+            }
+            break;
+        default:
+            break;
+        }
     }
 }
 void on_btnBetray_clicked(GtkButton *b)
 {
+    if (packetd->action_id == YOUR_TURN)
+    {
+        packetd->action_id = BETRAY;
+        bufferOut = set_parse(*packetd);
+        send(sock, bufferOut, strlen(bufferOut), 0);
+    }
 }
 void on_entryPseudo_changed(GtkEntry *e)
 {
