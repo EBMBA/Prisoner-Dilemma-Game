@@ -59,13 +59,16 @@ At the end of a game, a file containing the choices of each player in each round
 `make server` : compile the server <br>
 `make client` : compile the client <br>
 
-`make run` : start the project (1 server and 2 client) <br>
+`make run`* : start the project (1 server and 2 client) <br>
 `make runServer` : start the Server only<br>
 `make runClient` : start the Client only<br>
 
 `make documentation` : create documentation in `doc` folder, and open it <br>
-`make clean` : clean up directories containing source code and documentation
-
+`make clean` : clean up directories containing source code and documentation <br>
+<br>
+*<i>Functioning not guaranteed</i>
+<br>
+<b>For a guaranteed functioning run `make runServer` in one terminal then `make runClient` in two terminals</b><br>
 <br>
 
 ***
