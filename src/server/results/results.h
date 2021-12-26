@@ -12,7 +12,7 @@
 
 #include "../game/game.h"
 
-#define PATH_RESULTS "Results/results.csv"
+#define PATH_RESULTS "results/results.csv"
 
 void init_file_results();
 void write_round_results(Game *game);

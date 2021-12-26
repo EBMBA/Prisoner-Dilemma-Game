@@ -151,7 +151,6 @@ int timer_handler()
             packetd->action_id = NO_RESPONSE;
             bufferOut = set_parse(*packetd);
             send(sock, bufferOut, strlen(bufferOut), 0);
-
         }
     }
     return 1;
@@ -239,6 +238,7 @@ void on_entryPseudo_changed(GtkEntry *e)
  */
 void on_window_main_destroy()
 {
+    setID(0, CLIENT_PATH);
     gtk_main_quit();
 }
 

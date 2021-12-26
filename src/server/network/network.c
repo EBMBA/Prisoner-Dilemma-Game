@@ -166,7 +166,7 @@ void *threadProcess(void *ptr) {
     
     if (packetd.game_id != 0)
     {
-        update_player(packetd.game_id, connection);    
+        game = update_player(packetd.game_id, connection);            
     }
     
 

@@ -1,4 +1,5 @@
 game_id;total_rounds;current_round;money_per_round;player1;player1_reaction_time;player1_earned_money;player1_action;player1_result;player2;player2_reaction_time;player2_earned_money;player2_action;player2_result;
-45495;2;1;500;1;0;0;COOP;LOSE;2;0;500;BETRAY;WIN;
-45495;2;2;500;1;0;250;COOP;WIN;2;0;250;COOP;WIN;
-45495;2;2;500;1;0;750;FINISH;LOSE;2;0;750;FINISH;LOSE;
+35069;2;1;500;26466;0;0;NO RESPONSE;LOSE;1;0;0;NO RESPONSE;LOSE;
+55043;2;1;500;4;0;0;NO RESPONSE;LOSE;3;2;500;COOP;WIN;
+55043;2;2;500;4;0;500;BETRAY;WIN;3;1;0;COOP;LOSE;
+55043;2;2;500;4;0;500;FINISH;LOSE;3;0;1000;FINISH;WIN;
