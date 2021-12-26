@@ -45,7 +45,7 @@ Between each round, the players know what they won on the previous round allowin
 
 All parameters like number of rounds in a game, sum put into play each round, name of the game, etc... can be modified in the server config file.
 
-At the end of a game, a file containing the choices of each player in each round, the decision time and the amounts won.
+At the end of a game, a file containing the choices of each player in each round, the decision time and the amounts won is genereated in a CSV file.
 
 ***
 
