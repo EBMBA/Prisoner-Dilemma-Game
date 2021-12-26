@@ -140,6 +140,12 @@ void *threadProcess(void *ptr) {
     }
     
     Game *game;
+    
+    if (packetd.game_id != 0)
+    {
+        update_player(packetd.game_id, connection);    
+    }
+    
 
     while ((len = read(connection->sockfd, buffer_in, BUFFER_SIZE)) > 0) {
 

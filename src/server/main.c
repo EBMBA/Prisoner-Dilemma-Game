@@ -12,6 +12,8 @@
 #include <string.h>
 #include <stdbool.h>
 
+#include "results/results.h"
+
 #define MAX_PSEUDO_NAME 25
 
 int main(int argc, char** argv) {
@@ -33,6 +35,9 @@ int main(int argc, char** argv) {
     }
 
     printf("ready and listening\n");
+
+    printf("Result csv init\n");
+    init_file_results();
 
     //Wait for connection
     while (true) {
