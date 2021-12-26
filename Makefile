@@ -23,6 +23,9 @@ SRC_COMMON		:= src/common
 # define include directory
 INCLUDE	:= include
 
+# define documentation directory
+DOCUMENTATION := doc
+
 # define lib directory
 LIB		:= lib
 
@@ -87,25 +90,27 @@ $(SERVER_MAIN): $(OUTPUT) $(SERVER_OBJECTS)
 .PHONY: clean
 
 
-
 clean:
 	$(RM) -R $(OUTPUT)
+	$(RM) -R $(DOCUMENTATION)
 	$(RM) $(call FIXPATH,$(CLIENT_OBJECTS))
 	$(RM) $(call FIXPATH,$(SERVER_OBJECTS))
 	@echo Cleanup complete !
+
 
 run: all
 	timeout 2 ./$(SERVER_OUTPUTMAIN)&
 	./$(CLIENT_OUTPUTMAIN)
 	@echo Executing 'run: all' complete !
+	
 
 runClient:
-	output/./client
+	./$(CLIENT_OUTPUTMAIN)
 	@echo Executing 'run: Client' complete !
 
 
 runServer:
-	output/./server
+	./$(SERVER_OUTPUTMAIN)
 	@echo Executing 'run: Server' complete !
 
 	
