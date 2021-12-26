@@ -77,6 +77,30 @@ void init_second_window()
     labelPseudo = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblPseudoDisplay"));
     gtk_label_set_text(GTK_LABEL(labelPseudo), (const gchar *)tmp);
 
+    GtkButton *coopButton = GTK_BUTTON(gtk_builder_get_object(builderJeu, "btnCooperate"));
+    GtkButton *betrayButton = GTK_BUTTON(gtk_builder_get_object(builderJeu, "btnBetray"));
+
+    labelResult = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblResult"));
+
+    switch (packetd->action_id)
+    {
+    case NOT_YOUR_TURN:
+        sprintf(tmpRes, "Pas votre tour");
+        gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
+        gtk_widget_hide(GTK_WIDGET(coopButton));
+        gtk_widget_hide(GTK_WIDGET(betrayButton));
+        break;
+    case YOUR_TURN:
+        sprintf(tmpRes, "Votre tour");
+        gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
+        gtk_widget_show(GTK_WIDGET(coopButton));
+        gtk_widget_show(GTK_WIDGET(betrayButton));
+        break;
+
+    default:
+        break;
+    }
+
     pthread_t thread;
     pthread_create(&thread, 0, threadProcess, &sock);
     pthread_detach(thread);
@@ -246,8 +270,8 @@ void update_view(packet packetReceived)
         default:
             break;
         }
-        
-        // wait 10 secondes to show results 
+
+        // wait 10 secondes to show results
         sleep(10);
 
         close(sock);
