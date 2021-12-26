@@ -116,12 +116,18 @@ Game *find_game(u_int16_t game_id)
  * @param game_id ID of the unfinished gam
  * @param player player to reconnect
  */
-void update_player(u_int16_t game_id, connection_t *player)
+Game *update_player(u_int16_t game_id, connection_t *player)
 {
     //  update connection of player
     Game *game = find_game(game_id);
     packet packetd;
     char *buffer_out;
+
+    if (game == NULL)
+    {
+        return NULL;
+    }
+    
 
     for (int i = 0; i < 100; i++)
     {
@@ -162,4 +168,6 @@ void update_player(u_int16_t game_id, connection_t *player)
             }
         }
     }
+
+    return game;
 }

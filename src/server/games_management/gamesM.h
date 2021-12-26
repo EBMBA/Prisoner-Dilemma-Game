@@ -30,7 +30,7 @@ typedef struct
 void init_games_management();
 void add_game(Game game);
 Game *find_game(u_int16_t game_id);
-void update_player(u_int16_t game_id, connection_t *player);
+Game *update_player(u_int16_t game_id, connection_t *player);
 int remove_game(Game game);
 
 
