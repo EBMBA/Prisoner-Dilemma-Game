@@ -19,6 +19,7 @@
 #define LOSE 2
 
 #define WAITING_RESULT_TIME 3
+#define TIME_FOR_ROUND 5
 
 #define CLIENT_PATH "src/client/configuration/.id"
 
