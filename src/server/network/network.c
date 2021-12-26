@@ -86,10 +86,6 @@ int create_server_socket() {
 
     /* bind socket to port */
     address.sin_family = AF_INET;
-    //bind to all ip : 
-    //address.sin_addr.s_addr = INADDR_ANY;
-    //ou 0.0.0.0 
-    //Sinon  127.0.0.1
     address.sin_addr.s_addr = inet_addr("0.0.0.0");
     address.sin_port = htons(port);
 
@@ -104,23 +100,6 @@ int create_server_socket() {
     }
 
     return sockfd;
-}
-
-
-// Let us create a global variable to change it in threads
-int g = 0;
-
-// The function to be executed by all threads
-void *myThread(void *vargp, int *master_socket)
-{
-    // Store the value argument passed to this thread
-    int *myid = (int *)vargp;
-  
-    // Let us create a static variable to observe its changes
-    static int s = 0;
-  
-    // Print the argument, static and global variables
-    printf("Thread ID: %d, Static: %d, Global: %d\n", *myid, ++s, ++g);
 }
 
 
@@ -145,11 +124,6 @@ void *threadProcess(void *ptr) {
     printf("New incoming connection \n");
 
     add(connection);
-
-    //Welcome the new client
-    // printf("Welcome #%i\n", connection->index);
-    // sprintf(buffer_out, "Welcome #%i\n", connection->index);
-    // write(connection->sockfd, buffer_out, strlen(buffer_out));
 
     valread = read(connection->sockfd, buffer_in, BUFFER_SIZE);
 
@@ -199,33 +173,6 @@ void *threadProcess(void *ptr) {
 
             break;
         }
-        
-/* 
-        if (strncmp(buffer_in, "bye", 3) == 0) {
-            break;
-        }
-
-        strcpy(buffer_out, "\nServer Echo : ");
-        strncat(buffer_out, buffer_in, len);
-
-        if (buffer_in[0] == '@') {
-            for (int i = 0; i < MAX_SIMULTANEOUS_CONNECTIONS; i++) {
-                if (connections[i] != NULL) {
-                    write(connections[i]->sockfd, buffer_out, strlen(buffer_out));
-                }
-            }
-        } else if (buffer_in[0] == '#') {
-            int client = 0;
-            int read = sscanf(buffer_in, "%*[^0123456789]%d ", &client);
-            for (int i = 0; i < MAX_SIMULTANEOUS_CONNECTIONS; i++) {
-                if (client == connections[i]->index) {
-                    write(connections[i]->sockfd, buffer_out, strlen(buffer_out));
-                    break;
-                } //no client found ? : we dont care !!
-            }
-        } else {
-            write(connection->sockfd, buffer_out, strlen(buffer_out));
-        } */
 
         //clear input buffer
         memset(buffer_in, '\0', BUFFER_SIZE);

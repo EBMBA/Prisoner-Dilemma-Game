@@ -58,12 +58,9 @@ packet get_parse(char *bufferIn)
     u_int16_t *tokenI = malloc(sizeof(packet));
     int i = 0;
 
-    // printf("Protocol 1 \n");
     //  get the first token
     token = strtok(bufferIn, separator);
-    // printf("Protocol 2 \n");
-    // tokenI[0] = atoi(token);
-    // printf("Protocol 3 \n");
+
     /* walk through other tokens */
     while (token != NULL)
     {
@@ -107,30 +104,3 @@ char *set_parse(packet packetd)
     printf("Packet to buffer : ok \n");
     return bufferOut;
 }
-
-/*int main(int argc, char const *argv[])
-{
-    packet packetd;
-
-    packetd.client_id = 0;
-    packetd.game_id = 1;
-    packetd.action_id = 2;
-    packetd.result_id = 3;
-    packetd.money = 4;
-    packetd.numberRound = 5;
-
-    char *buffer;
-
-    buffer = set_parse(packetd);
-    packetd = get_parse(buffer);
-
-    printf("%u;%u;%u;%u;%u;%u\n",
-            packetd.client_id,
-            packetd.game_id,
-            packetd.action_id,
-            packetd.result_id,
-            packetd.money,
-            packetd.numberRound);
-    return 0;
-}
-*/
