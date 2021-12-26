@@ -4,7 +4,7 @@
  * @version 1.0
  * @date 2021-12-20
  * 
- * @copyright Copyright (c) 2021
+ * @copyright Copyright (c) 2021 KVEP
  */
 
 #include <stdio.h>

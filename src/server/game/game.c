@@ -1,3 +1,12 @@
+/**
+ * @file game.c
+ * @author KVEP - https://gitlab.com/kvep/
+ * @version 1.0
+ * @date 2021-12-03
+ * 
+ * @copyright Copyright (c) 2021 KVEP
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,6 +19,11 @@
 #include "../../common/protocol/protocol.h"
 #include "../games_management/gamesM.h"
 
+/**
+ * @brief initialise the game with the setting value
+ * @param game game structure 
+ * @return Game* : game structure updated
+ */
 Game *init_game(Game *game)
 {
     game = malloc(sizeof(Game));
@@ -32,6 +46,12 @@ Game *init_game(Game *game)
     return game;
 }
 
+/**
+ * @brief create a game with the first player and set status to "wait" for the second
+ * @param player first player connected to the server
+ * @param game game structure (with settins of the game)
+ * @return Game* : created game
+ */
 Game *create_game(connection_t *player, Game *game)
 {
     srand(time(NULL));
@@ -62,6 +82,12 @@ Game *create_game(connection_t *player, Game *game)
     return game;
 }
 
+/**
+ * @brief puts the second player in the game
+ * @param player second player connected to the server
+ * @param game game to join
+ * @return Game* : game updated with the second player
+ */
 Game *join_game(connection_t *player, Game *game)
 {
     game->player2 = player;
@@ -73,10 +99,9 @@ Game *join_game(connection_t *player, Game *game)
 }
 
 /**
- * @brief Send packet of the game structure to both players or one
- *
+ * @brief send packet of the game structure to both players or one
  * @param game game structure
- * @param signal Start, finish, P1_TURN, P2_TURN  or update
+ * @param signal start, finish, P1_TURN, P2_TURN  or update
  */
 void send_packet(Game *game, int signal)
 {
@@ -247,6 +272,11 @@ void send_packet(Game *game, int signal)
     }
 }
 
+/**
+ * @brief initialise the game for the start
+ * @param game game to initialise
+ * @return Game* : game updated 
+ */
 Game *init_start_game(Game *game)
 {
     game->player1_action_id = YOUR_TURN;
@@ -255,6 +285,12 @@ Game *init_start_game(Game *game)
     return game;
 }
 
+/**
+ * @brief update the game with the answer of player (client)
+ * @param game game to update
+ * @param packetd packet delivered by client
+ * @return Game* : game updated 
+ */
 Game *update_game(Game *game, packet packetd)
 {
     if (game->player1->index == packetd.client_id)
@@ -301,6 +337,11 @@ Game *update_game(Game *game, packet packetd)
     return game;
 }
 
+/**
+ * @brief calculate total result (win or loose) and total money_earned of the game
+ * @param game game whose total result must be calculated
+ * @return Game* : game updated with total result
+ */
 Game *calculate_final_result(Game *game)
 {
     if (game->player1_total_earned > game->player2_total_earned)
@@ -326,6 +367,11 @@ Game *calculate_final_result(Game *game)
     return game;
 }
 
+/**
+ * @brief calculate result (win or loose) and money earned each round
+ * @param game game whose result must be calculated
+ * @return Game* : game updated with result
+ */
 Game *calculate_result(Game *game)
 {
     printf("Game %u caculating results...\n", game->id);
