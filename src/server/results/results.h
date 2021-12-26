@@ -1,3 +1,12 @@
+/**
+ * @file results.h
+ * @author KVEP - https://gitlab.com/kvep/
+ * @version 1.0
+ * @date 2021-12-26
+ * 
+ * @copyright Copyright (c) 2021 KVEP
+ */
+
 #if !defined(RESULTS_H)
 #define RESULTS_H
 

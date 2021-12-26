@@ -18,7 +18,7 @@
 GamesM gamesM;
 
 /**
- * @brief initialise the structure "gamesM"
+ * @brief initializes the structure "gamesM"
  */
 void init_games_management()
 {
@@ -26,7 +26,7 @@ void init_games_management()
 }
 
 /**
- * @brief add game in a structure "gamesM"
+ * @brief adds game in a structure "gamesM"
  * @param game game to add in structure
  */
 void add_game(Game game)
@@ -37,7 +37,7 @@ void add_game(Game game)
 }
 
 /**
- * @brief remove game from the structure
+ * @brief removes game from the structure
  * @param game game to remove 
  * @return int : code
  */
@@ -72,7 +72,7 @@ int remove_game(Game game)
 }
 
 /**
- * @brief search a game in the structure 
+ * @brief searchs a game in the structure 
  * @param game_id ID of the game to search
  * @return Game* : game found
  */
@@ -111,6 +111,11 @@ Game *find_game(u_int16_t game_id)
     return NULL;
 }
 
+/**
+ * @brief reconnects the player to his unfinished game
+ * @param game_id ID of the unfinished gam
+ * @param player player to reconnect
+ */
 void update_player(u_int16_t game_id, connection_t *player)
 {
     //  update connection of player

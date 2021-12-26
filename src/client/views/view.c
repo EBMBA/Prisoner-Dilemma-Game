@@ -47,7 +47,7 @@ pthread_t thread;
 int second_window = 0;
 
 /**
- * @brief start and displays the first graphic window (homepage window)
+ * @brief starts and displays the first graphic window (homepage window)
  * @param argc nothing
  * @param argv nothing
  * @param sockfd connection socket
@@ -78,7 +78,7 @@ void init_main_window(int argc, char **argv, int sockfd)
 }
 
 /**
- * @brief start and displays the game graphic window, same for each round during game.
+ * @brief starts and displays the game graphic window, same for each round during game.
  * This window contain both choices (betray or coop) 
  */
 void init_second_window()
@@ -169,7 +169,7 @@ void on_buttonPlay_clicked(GtkButton *b)
 }
 
 /**
- * @brief send the choice (cooperate) to the server 
+ * @brief sends the choice (cooperate) to the server 
  * @param b gtk button
  */
 void on_btnCooperate_clicked(GtkButton *b)
@@ -184,7 +184,7 @@ void on_btnCooperate_clicked(GtkButton *b)
 }
 
 /**
- * @brief send the choice (betray) to the server
+ * @brief sends the choice (betray) to the server
  * @param b gtk button
  */
 void on_btnBetray_clicked(GtkButton *b)
@@ -198,7 +198,7 @@ void on_btnBetray_clicked(GtkButton *b)
 }
 
 /**
- * @brief create temp variable with the pseudo choose in the first window
+ * @brief creates temp variable with the pseudo choose in the first window
  * @param e pseudo
  */
 void on_entryPseudo_changed(GtkEntry *e)
@@ -208,7 +208,7 @@ void on_entryPseudo_changed(GtkEntry *e)
 }
 
 /**
- * @brief close the gtk window
+ * @brief closes the gtk window
  */
 void on_window_main_destroy()
 {
@@ -216,7 +216,7 @@ void on_window_main_destroy()
 }
 
 /**
- * @brief update graphic window during all the game
+ * @brief updates graphic window during all the game
  * @param packetReceived packet delivered by the server with all information
  */
 void update_view(packet packetReceived)

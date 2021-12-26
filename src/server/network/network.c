@@ -29,7 +29,7 @@
 connection_t* connections[MAX_SIMULTANEOUS_CONNECTIONS];
 
 /**
- * @brief initialise array "connections" containing client connection
+ * @brief initialises array "connections" containing client connection
  */
 void init_sockets_array() {
     for (int i = 0; i < MAX_SIMULTANEOUS_CONNECTIONS; i++) {
@@ -38,7 +38,7 @@ void init_sockets_array() {
 }
 
 /**
- * @brief add connection in the array
+ * @brief adds connection in the array
  * @param connection connection to add in the array
  */
 void add(connection_t *connection) {
@@ -53,7 +53,7 @@ void add(connection_t *connection) {
 }
 
 /**
- * @brief delete connection from the array
+ * @brief removes connection from the array
  * @param connection connection to delete 
  */
 void del(connection_t *connection) {
@@ -68,7 +68,7 @@ void del(connection_t *connection) {
 }
 
 /**
- * @brief Create a server socket object
+ * @brief Creates a server socket object
  * @return int : listen socket 
  */
 int create_server_socket() {

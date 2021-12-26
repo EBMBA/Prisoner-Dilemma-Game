@@ -21,7 +21,7 @@
 #include "../results/results.h"
 
 /**
- * @brief initialise the game with the setting value
+ * @brief initialises the game with the setting value
  * @param game game structure 
  * @return Game* : game structure updated
  */
@@ -48,7 +48,7 @@ Game *init_game(Game *game)
 }
 
 /**
- * @brief create a game with the first player and set status to "wait" for the second
+ * @brief creates a game with the first player and set status to "wait" for the second
  * @param player first player connected to the server
  * @param game game structure (with settins of the game)
  * @return Game* : created game
@@ -100,7 +100,7 @@ Game *join_game(connection_t *player, Game *game)
 }
 
 /**
- * @brief send packet of the game structure to both players or one
+ * @brief sends packet of the game structure to both players or one
  * @param game game structure
  * @param signal start, finish, P1_TURN, P2_TURN  or update
  */
@@ -274,7 +274,7 @@ void send_packet(Game *game, int signal)
 }
 
 /**
- * @brief initialise the game for the start
+ * @brief initialises the game for the start
  * @param game game to initialise
  * @return Game* : game updated 
  */
@@ -287,7 +287,7 @@ Game *init_start_game(Game *game)
 }
 
 /**
- * @brief update the game with the answer of player (client)
+ * @brief updates the game with the answer of player (client)
  * @param game game to update
  * @param packetd packet delivered by client
  * @return Game* : game updated 
@@ -342,7 +342,7 @@ Game *update_game(Game *game, packet packetd)
 }
 
 /**
- * @brief calculate total result (win or loose) and total money_earned of the game
+ * @brief calculates total result (win or loose) and total money_earned of the game
  * @param game game whose total result must be calculated
  * @return Game* : game updated with total result
  */
@@ -372,7 +372,7 @@ Game *calculate_final_result(Game *game)
 }
 
 /**
- * @brief calculate result (win or loose) and money earned each round
+ * @brief calculates result (win or loose) and money earned each round
  * @param game game whose result must be calculated
  * @return Game* : game updated with result
  */

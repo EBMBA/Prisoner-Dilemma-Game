@@ -17,7 +17,7 @@
 #include "../utils/editconf.h"
 
 /**
- * @brief initilise the game packet 
+ * @brief initializes the game packet 
  * @param packetd game packet
  * @param client_OR_server identification : 0 for client, 1 for server
  * @return packet* : game packet updated
@@ -46,7 +46,7 @@ packet *init_packet(packet *packetd, int client_OR_server)
 }
 
 /**
- * @brief Get the parse object : convert a "char" in packet
+ * @brief Gets the parse object : convert a "char" in packet
  * @param bufferIn "char" to convert in packet
  * @return packet : result of the converstion 
  */
@@ -87,7 +87,7 @@ packet get_parse(char *bufferIn)
 }
 
 /**
- * @brief Set the parse object : convert a packet in "char"
+ * @brief Sets the parse object : convert a packet in "char"
  * @param packetd packet to convert in "char"
  * @return char* : result of the converstion  
  */

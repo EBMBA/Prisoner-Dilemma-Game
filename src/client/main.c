@@ -25,6 +25,12 @@
 //#define PORT 8085
 #define MAX_SOCK_SIZE 1024
 
+/**
+ * @brief starts the client 
+ * @param argc nothing 
+ * @param argv nothing
+ * @return int : code
+ */
 int main(int argc, char **argv)
 {
     init_thread(argc, argv);

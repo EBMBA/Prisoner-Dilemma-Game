@@ -1,3 +1,12 @@
+/**
+ * @file results.c
+ * @author KVEP - https://gitlab.com/kvep/
+ * @version 1.0
+ * @date 2021-12-26
+ * 
+ * @copyright Copyright (c) 2021 KVEP
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,6 +16,9 @@
 #include "results.h"
 #include "../../common/protocol/protocol.h"
 
+/**
+ * @brief initializes the result file
+ */
 void init_file_results(){
     FILE *results_file = NULL;
 
@@ -17,6 +29,12 @@ void init_file_results(){
         fclose(results_file);
     }
 }
+
+/**
+ * @brief Get the id string object and return a char
+ * @param id_s action code to convert in char
+ * @return char* : char converted from the id
+ */
 char *get_id_string(u_int16_t id_s){
     switch (id_s)
     {
@@ -42,6 +60,10 @@ char *get_id_string(u_int16_t id_s){
     return NULL;
 }
 
+/**
+ * @brief write result of each round in the result file
+ * @param game game concerned
+ */
 void write_round_results(Game *game){
     FILE* results_file = NULL;
     // open the file and we write the round of the game in it
@@ -65,6 +87,10 @@ void write_round_results(Game *game){
     fclose(results_file);
 }
 
+/**
+ * @brief write final result of the game in the result file
+ * @param game game concerned
+ */
 void write_final_results(Game *game){
        FILE* results_file = NULL;
     // open the file and we write the round of the game in it

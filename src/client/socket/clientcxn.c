@@ -45,7 +45,7 @@ void *threadProcess(void * ptr) {
 }
 
 /**
- * @brief start the connection between client and server
+ * @brief starts the connection between client and server
  * @return int : connection socket
  */
 int open_connection() {
@@ -88,7 +88,7 @@ int open_connection() {
 }
 
 /**
- * @brief initialize thread, open the connection and start the first graphic window
+ * @brief initializes thread, open the connection and start the first graphic window
  * @param argc 
  * @param argv 
  */
