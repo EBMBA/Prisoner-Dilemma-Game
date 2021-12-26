@@ -46,12 +46,16 @@ Game *create_game(connection_t *player, Game *game)
     game->player1_earned_money = 0;
     game->player1_reaction_time = 0;
     game->player1_result_id = 0;
+    game->player1_average_time = 0;
+    game->player1_total_earned = 0;
 
     game->player2 = NULL;
     game->player2_action_id = WAIT;
     game->player2_earned_money = 0;
     game->player2_reaction_time = 0;
     game->player2_result_id = 0;
+    game->player2_average_time = 0;
+    game->player2_total_earned = 0;
 
     add_game(*game);
 
@@ -62,9 +66,6 @@ Game *join_game(connection_t *player, Game *game)
 {
     game->player2 = player;
     game->player2_action_id = PLAY;
-    game->player2_earned_money = 0;
-    game->player2_reaction_time = 0;
-    game->player2_result_id = 0;
 
     printf("Second player joined game ID : %u !\n", game->id);
 
@@ -190,6 +191,57 @@ void send_packet(Game *game, int signal)
         printf("NOT YOUR TURN Packet for P2 sended\n");
         break;
 
+    case FINISH: //  handle game finish sended results...
+        packetdP1.action_id = FINISH;
+        packetdP1.client_id = (u_int16_t)game->player1->index;
+        packetdP1.game_id = game->id;
+        packetdP1.current_round = game->current_round;
+        packetdP1.earned_money = game->player1_earned_money;
+        packetdP1.result_id = game->player1_result_id;
+        packetdP1.time = INIT;
+
+        buffer_outP1 = set_parse(packetdP1);
+        write(game->player1->sockfd, buffer_outP1, strlen(buffer_outP1));
+        printf("FINISH Packet for P1 sended\n");
+
+        packetdP2.action_id = FINISH;
+        packetdP2.client_id = (u_int16_t)game->player2->index;
+        packetdP2.game_id = game->id;
+        packetdP2.current_round = game->current_round;
+        packetdP2.earned_money = game->player2_earned_money;
+        packetdP2.result_id = game->player2_result_id;
+        packetdP2.time = INIT;
+
+        buffer_outP2 = set_parse(packetdP2);
+        write(game->player2->sockfd, buffer_outP2, strlen(buffer_outP2));
+        printf("FINISH Packet for P2 sended\n");
+        break;
+
+    case RESULTS: // Send final results 
+        packetdP1.action_id = RESULTS;
+        packetdP1.client_id = (u_int16_t)game->player1->index;
+        packetdP1.game_id = game->id;
+        packetdP1.current_round = game->current_round;
+        packetdP1.earned_money = game->player1_total_earned;
+        packetdP1.result_id = game->player1_result_id;
+        packetdP1.time = game->player1_average_time;
+
+        buffer_outP1 = set_parse(packetdP1);
+        write(game->player1->sockfd, buffer_outP1, strlen(buffer_outP1));
+        printf("RESULT Packet for P1 sended\n");
+
+        packetdP2.action_id = RESULTS;
+        packetdP2.client_id = (u_int16_t)game->player2->index;
+        packetdP2.game_id = game->id;
+        packetdP2.current_round = game->current_round;
+        packetdP2.earned_money = game->player2_total_earned;
+        packetdP2.result_id = game->player2_result_id;
+        packetdP2.time = game->player2_average_time;
+
+        buffer_outP2 = set_parse(packetdP2);
+        write(game->player2->sockfd, buffer_outP2, strlen(buffer_outP2));
+        printf("RESULT Packet for P2 sended\n");
+        break;
     default:
         break;
     }
@@ -209,6 +261,7 @@ Game *update_game(Game *game, packet packetd)
     {
         game->player1_action_id = packetd.action_id;
         game->player1_reaction_time = packetd.time;
+        game->player1_average_time += packetd.time;
 
         send_packet(game, P2_TURN);
     }
@@ -216,6 +269,7 @@ Game *update_game(Game *game, packet packetd)
     {
         game->player2_action_id = packetd.action_id;
         game->player2_reaction_time = packetd.time;
+        game->player2_average_time += packetd.time;
 
         if (game->current_round < game->total_rounds)
         {
@@ -230,13 +284,45 @@ Game *update_game(Game *game, packet packetd)
         else if (game->current_round == game->total_rounds)
         {
             game = calculate_result(game);
-            // TODO calculated final result for all game
-            // TODO export results on CSV
             send_packet(game, FINISH);
-            // TODO remove the game of the game_management
+
+            // calculated final result for all game
+            sleep(WAITING_RESULT_TIME);
+            calculate_final_result(game);
+            send_packet(game, RESULTS);
+
+            // TODO export results on CSV
+
+            // remove the game of the game_management
+            remove_game(*game);
         }
     }
 
+    return game;
+}
+
+Game *calculate_final_result(Game *game)
+{
+    if (game->player1_total_earned > game->player2_total_earned)
+    {
+        game->player1_result_id = WIN;
+        game->player2_result_id = LOSE;
+    }
+    else if (game->player1_total_earned < game->player2_total_earned)
+    {
+        game->player1_result_id = LOSE;
+        game->player2_result_id = WIN;
+    }
+    else
+    { // same score
+        game->player1_result_id = LOSE;
+        game->player2_result_id = LOSE;
+    }
+
+    // Calculate average reaction time
+    game->player1_average_time = (u_int16_t)game->player1_average_time / game->current_round;
+    game->player2_average_time = (u_int16_t)game->player2_average_time / game->current_round;
+    
     return game;
 }
 
@@ -250,10 +336,12 @@ Game *calculate_result(Game *game)
         // For player1
         game->player1_result_id = WIN;
         game->player1_earned_money = (u_int16_t)game->money_per_round / 2;
+        game->player1_total_earned += game->player1_earned_money;
 
         // For player2
         game->player2_result_id = WIN;
         game->player2_earned_money = (u_int16_t)game->money_per_round / 2;
+        game->player2_total_earned += game->player2_earned_money;
     }
     else if (game->player1_action_id == BETRAY && game->player2_action_id == COOP)
     {
@@ -262,10 +350,12 @@ Game *calculate_result(Game *game)
         // For player1
         game->player1_result_id = WIN;
         game->player1_earned_money = game->money_per_round;
+        game->player1_total_earned += game->player1_earned_money;
 
         // For player2
         game->player2_result_id = LOSE;
         game->player2_earned_money = 0;
+        game->player2_total_earned += game->player2_earned_money;
     }
     else if (game->player1_action_id == COOP && game->player2_action_id == BETRAY)
     {
@@ -274,10 +364,12 @@ Game *calculate_result(Game *game)
         // For player1
         game->player1_result_id = LOSE;
         game->player1_earned_money = 0;
+        game->player1_total_earned += game->player1_earned_money;
 
         // For player2
         game->player2_result_id = WIN;
         game->player2_earned_money = game->money_per_round;
+        game->player2_total_earned += game->player2_earned_money;
     }
     else if (game->player1_action_id == BETRAY && game->player2_action_id == BETRAY)
     {
@@ -286,10 +378,12 @@ Game *calculate_result(Game *game)
         // For player1
         game->player1_result_id = LOSE;
         game->player1_earned_money = 0;
+        game->player1_total_earned += game->player1_earned_money;
 
         // For player2
         game->player2_result_id = LOSE;
         game->player2_earned_money = 0;
+        game->player2_total_earned += game->player2_earned_money;
     }
     else if (game->player1_action_id == NO_RESPONSE && game->player2_action_id != NO_RESPONSE)
     {
@@ -298,10 +392,12 @@ Game *calculate_result(Game *game)
         // For player1
         game->player1_result_id = LOSE;
         game->player1_earned_money = 0;
+        game->player1_total_earned += game->player1_earned_money;
 
         // For player2
         game->player2_result_id = WIN;
         game->player2_earned_money = game->money_per_round;
+        game->player2_total_earned += game->player2_earned_money;
     }
     else if (game->player1_action_id != NO_RESPONSE && game->player2_action_id == NO_RESPONSE)
     {
@@ -310,10 +406,12 @@ Game *calculate_result(Game *game)
         // For player1
         game->player1_result_id = WIN;
         game->player1_earned_money = game->money_per_round;
+        game->player1_total_earned += game->player1_earned_money;
 
         // For player2
         game->player2_result_id = LOSE;
         game->player2_earned_money = 0;
+        game->player2_total_earned += game->player2_earned_money;
     }
     else if (game->player1_action_id == NO_RESPONSE && game->player2_action_id == NO_RESPONSE)
     {
@@ -322,10 +420,12 @@ Game *calculate_result(Game *game)
         // For player1
         game->player1_result_id = LOSE;
         game->player1_earned_money = 0;
+        game->player1_total_earned += game->player1_earned_money;
 
         // For player2
         game->player2_result_id = LOSE;
         game->player2_earned_money = 0;
+        game->player2_total_earned += game->player2_earned_money;
     }
 
     return game;

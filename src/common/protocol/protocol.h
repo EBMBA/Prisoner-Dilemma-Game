@@ -12,6 +12,7 @@
 #define NOT_YOUR_TURN 8
 #define YOUR_TURN 9
 #define UPDATE 10
+#define RESULTS 11
 
 #define WIN 1
 #define LOSE 2
@@ -28,7 +29,8 @@ typedef struct
     u_int16_t result_id; // wait == 0 ; win == 1; lose == 2;
     u_int16_t earned_money;
     u_int16_t current_round;
-    u_int16_t time;
+    u_int16_t time;         
+    
 } packet;
 
 packet *init_packet(packet *packetd, int client_OR_server);
