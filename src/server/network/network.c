@@ -29,7 +29,7 @@
 connection_t* connections[MAX_SIMULTANEOUS_CONNECTIONS];
 
 /**
- * @brief initialises array "connections" containing client connection
+ * @brief initializes array "connections" containing client connection
  */
 void init_sockets_array() {
     for (int i = 0; i < MAX_SIMULTANEOUS_CONNECTIONS; i++) {

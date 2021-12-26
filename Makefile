@@ -99,7 +99,8 @@ clean:
 
 
 run: all
-	timeout 2 ./$(SERVER_OUTPUTMAIN)&
+	./$(SERVER_OUTPUTMAIN)
+	./$(CLIENT_OUTPUTMAIN)
 	./$(CLIENT_OUTPUTMAIN)
 	@echo Executing 'run: all' complete !
 	
@@ -117,5 +118,5 @@ runServer:
 documentation:
 	-doxygen$(DOXYGENCONF)
 	@sleep 2
-	@xdg-open doc/html/index.html
+	@xdg-open $(DOCUMENTATION)/html/index.html
 	@echo Create and Open 'documentation' complete !

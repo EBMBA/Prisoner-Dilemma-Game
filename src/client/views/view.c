@@ -105,7 +105,7 @@ void init_second_window()
     switch (packetd->action_id)
     {
     case NOT_YOUR_TURN:
-        sprintf(tmpRes, "Patientez votre tour arrive ! ");
+        sprintf(tmpRes, "Wait for your turn !");
         gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
         gtk_widget_hide(GTK_WIDGET(coopButton));
         gtk_widget_hide(GTK_WIDGET(betrayButton));
@@ -113,7 +113,7 @@ void init_second_window()
         gtk_widget_hide(GTK_WIDGET(labelBetray));
         break;
     case YOUR_TURN:
-        sprintf(tmpRes, "Votre tour");
+        sprintf(tmpRes, "It's your turn to play");
         gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
         gtk_widget_show(GTK_WIDGET(coopButton));
         gtk_widget_show(GTK_WIDGET(betrayButton));
@@ -229,7 +229,7 @@ void on_btnBetray_clicked(GtkButton *b)
  */
 void on_entryPseudo_changed(GtkEntry *e)
 {
-    sprintf(tmp, "%s, que décidez-vous de faire ?", gtk_entry_get_text(e));
+    sprintf(tmp, "%s, what do you decide to do ?", gtk_entry_get_text(e));
     // gtk_label_set_text(GTK_LABEL(labelPseudo), (const gchar*) tmp);
 }
 
@@ -263,7 +263,7 @@ void update_view(packet packetReceived)
     switch (packetd->action_id)
     {
     case NOT_YOUR_TURN:
-        sprintf(tmpRes, "Pas votre tour");
+        sprintf(tmpRes, "Not your turn");
         gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
         gtk_widget_hide(GTK_WIDGET(coopButton));
         gtk_widget_hide(GTK_WIDGET(betrayButton));
@@ -272,7 +272,7 @@ void update_view(packet packetReceived)
         break;
     case YOUR_TURN:
         elapsed_time = TIME_FOR_ROUND;
-        sprintf(tmpRes, "Votre tour");
+        sprintf(tmpRes, "Your turn");
         gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
         gtk_widget_show(GTK_WIDGET(coopButton));
         gtk_widget_show(GTK_WIDGET(betrayButton));
@@ -285,12 +285,12 @@ void update_view(packet packetReceived)
         {
         case WIN:
             // AFFICHER MESSAGE WIN
-            sprintf(tmpRes, "Vous avez gagnez : %u€", packetd->earned_money);
+            sprintf(tmpRes, "You won : %u€ the previous round", packetd->earned_money);
             gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
             break;
         case LOSE:
             // AFFICHER LOSE
-            sprintf(tmpRes, "Vous avez perdu");
+            sprintf(tmpRes, "You lost the previous round");
             gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
             break;
         default:
@@ -304,12 +304,11 @@ void update_view(packet packetReceived)
         switch (packetd->result_id)
         {
         case WIN:
-            sprintf(tmpRes, "Dernier tour, vous avez gagnez : %u€", packetd->earned_money);
+            sprintf(tmpRes, "Its the last round ! You won : %u€ the last round", packetd->earned_money);
             gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
             break;
-
         case LOSE:
-            sprintf(tmpRes, "Dernier tour, vous avez perdu");
+            sprintf(tmpRes, "Its the last round ! You have lost");
             gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
             break;
         default:
@@ -322,14 +321,14 @@ void update_view(packet packetReceived)
         switch (packetd->result_id)
         {
         case WIN:
-            sprintf(tmpRes, "Vous avez gagnez la partie avec %u€", packetd->earned_money);
+            sprintf(tmpRes, "You won the the game and %u€", packetd->earned_money);
             gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
             // Put gameId to 0
             setID(0, ID_FILE);
             break;
 
         case LOSE:
-            sprintf(tmpRes, "Vous avez perdu la partie avec %u€", packetd->earned_money);
+            sprintf(tmpRes, "You lost the game but you won %u€", packetd->earned_money);
             gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
             // Put gameId to 0
             setID(0, ID_FILE);
