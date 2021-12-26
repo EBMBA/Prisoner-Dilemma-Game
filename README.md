@@ -59,7 +59,7 @@ At the end of a game, a file containing the choices of each player in each round
 `make server` : compile the server <br>
 `make client` : compile the client <br>
 
-`make run` : start the project (server and client) <br>
+`make run` : start the project (1 server and 2 client) <br>
 `make runServer` : start the Server only<br>
 `make runClient` : start the Client only<br>
 

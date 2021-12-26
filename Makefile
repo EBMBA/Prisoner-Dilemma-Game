@@ -99,7 +99,8 @@ clean:
 
 
 run: all
-	timeout 2 ./$(SERVER_OUTPUTMAIN)&
+	./$(SERVER_OUTPUTMAIN)
+	./$(CLIENT_OUTPUTMAIN)
 	./$(CLIENT_OUTPUTMAIN)
 	@echo Executing 'run: all' complete !
 	
