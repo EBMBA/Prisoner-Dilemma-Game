@@ -88,7 +88,7 @@ int open_connection() {
 }
 
 /**
- * @brief initialize thread, open the connection and start the first graphical window
+ * @brief initialize thread, open the connection and start the first graphic window
  * @param argc 
  * @param argv 
  */

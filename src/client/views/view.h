@@ -1,3 +1,12 @@
+/**
+ * @file view.h
+ * @author KVEP - https://gitlab.com/kvep/
+ * @version 1.0
+ * @date 2021-11-17
+ * 
+ * @copyright Copyright (c) 2021
+ */
+
 #ifndef LAUNCH_H
 #define LAUNCH_H
 //#include <gtk-3.0/gtk/gtk.h>
