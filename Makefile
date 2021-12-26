@@ -117,5 +117,5 @@ runServer:
 documentation:
 	-doxygen$(DOXYGENCONF)
 	@sleep 2
-	@xdg-open doc/html/index.html
+	@xdg-open $(DOCUMENTATION)/html/index.html
 	@echo Create and Open 'documentation' complete !

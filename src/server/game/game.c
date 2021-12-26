@@ -21,7 +21,7 @@
 #include "../results/results.h"
 
 /**
- * @brief initialises the game with the setting value
+ * @brief initializes the game with the setting value
  * @param game game structure 
  * @return Game* : game structure updated
  */
@@ -274,8 +274,8 @@ void send_packet(Game *game, int signal)
 }
 
 /**
- * @brief initialises the game for the start
- * @param game game to initialise
+ * @brief initializes the game for the start
+ * @param game game to initialize
  * @return Game* : game updated 
  */
 Game *init_start_game(Game *game)
