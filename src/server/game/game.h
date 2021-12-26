@@ -15,6 +15,7 @@
 
 #define P1_TURN 100
 #define P2_TURN 101
+#define CURRENT_STATUS 103
 
 /**
  * @brief structure "Game" containing all the information needed for the game process.

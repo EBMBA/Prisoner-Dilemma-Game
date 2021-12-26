@@ -43,6 +43,8 @@ packet *packetd;
 char *bufferOut = NULL;
 char bufferIn[MAX_SOCK_SIZE] = {0};
 int sock = 0;
+pthread_t thread;
+int second_window = 0;
 
 /**
  * @brief start and displays the first graphic window (homepage window)
@@ -52,11 +54,6 @@ int sock = 0;
  */
 void init_main_window(int argc, char **argv, int sockfd)
 {
-    // const char * game_path = getenv( "PWD" );
-    // char path[128];
-    // strcpy(path, game_path);
-    // strcat(path, "/src/client/glade/Interface.glade");
-
     gtk_init(&argc, &argv);
     builder = gtk_builder_new_from_file("src/client/glade/Interface.glade");
     window = GTK_WIDGET(gtk_builder_get_object(builder, "app_win"));
@@ -120,13 +117,9 @@ void init_second_window()
         break;
     }
 
-    pthread_t thread;
     pthread_create(&thread, 0, threadProcess, &sock);
     pthread_detach(thread);
 
-    // labelBet = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblBet"));
-    // sprintf(tmpBet, "Il y'a %d€ en jeu", packetd.);
-    // gtk_label_set_text(GTK_LABEL(labelBet), (const gchar* ) tmpBet);
 }
 
 /**
@@ -150,11 +143,6 @@ int timer_handler()
  */
 void on_buttonPlay_clicked(GtkButton *b)
 {
-    // const char * game_path = getenv( "PWD" );
-    // char path[128];
-    // strcpy(path, game_path);
-    // strcat(path, "/src/client/glade/InterfaceJeu1.glade");
-
     if (timer_id == 0)
     {
         timer_id = g_timeout_add(1000, (GSourceFunc)timer_handler, NULL);
@@ -176,6 +164,7 @@ void on_buttonPlay_clicked(GtkButton *b)
     if (packetd->action_id == YOUR_TURN || packetd->action_id == NOT_YOUR_TURN)
     {
         init_second_window();
+        setID(packetd->game_id, CLIENT_PATH);
     }
 }
 

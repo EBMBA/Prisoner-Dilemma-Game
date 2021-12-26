@@ -22,6 +22,7 @@
 #define YOUR_TURN 9
 #define UPDATE 10
 #define RESULTS 11
+#define CURRENT_STATUS 12
 
 #define WIN 1
 #define LOSE 2

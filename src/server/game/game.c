@@ -18,6 +18,7 @@
 #include "../network/network.h"
 #include "../../common/protocol/protocol.h"
 #include "../games_management/gamesM.h"
+#include "../results/results.h"
 
 /**
  * @brief initialise the game with the setting value
@@ -316,6 +317,8 @@ Game *update_game(Game *game, packet packetd)
             sleep(WAITING_RESULT_TIME);
 
             send_packet(game, P1_TURN);
+
+            write_round_results(game);
         }
         else if (game->current_round == game->total_rounds)
         {
@@ -328,6 +331,7 @@ Game *update_game(Game *game, packet packetd)
             send_packet(game, RESULTS);
 
             // TODO export results on CSV
+            write_final_results(game);
 
             // remove the game of the game_management
             remove_game(*game);
