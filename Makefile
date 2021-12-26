@@ -99,9 +99,9 @@ clean:
 
 
 run: all
-	./$(SERVER_OUTPUTMAIN)
-	./$(CLIENT_OUTPUTMAIN)
-	./$(CLIENT_OUTPUTMAIN)
+	@xfce4-terminal --working-directory=$$PWD -T "Server" -e 'bash -c "./$(SERVER_OUTPUTMAIN); bash"'
+	@xfce4-terminal --working-directory=$$PWD -T "First Client" -e 'bash -c "./$(CLIENT_OUTPUTMAIN); bash"'
+	@xfce4-terminal --working-directory=$$PWD -T "Second Client" -e 'bash -c "./$(CLIENT_OUTPUTMAIN); bash"'
 	@echo Executing 'run: all' complete !
 	
 
