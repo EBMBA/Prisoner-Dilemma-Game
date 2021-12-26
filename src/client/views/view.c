@@ -14,7 +14,7 @@
 #include "../../common/utils/editconf.h"
 #include "../../common/protocol/protocol.h"
 #include "../socket/clientcxn.h"
-
+#define MAX_SOCK_SIZE 1024
 GtkBuilder *builder = NULL;
 GtkBuilder *builderJeu = NULL;
 GtkWidget *window;
@@ -24,10 +24,14 @@ char tmpRes[128];
 // int bet=50;
 GtkWidget *labelPseudo;
 GtkWidget *labelResult;
+GtkWidget *labelCoop;
+GtkWidget *labelBetray;
+GtkLabel *timelabel;
+GtkWidget *prog1;
+int countCurrent = 5;
+int countDownMax = 10;
 
-#define MAX_SOCK_SIZE 1024
-
-int elapsed_time = 0;
+int elapsed_time = TIME_FOR_ROUND;
 int timer_id = 0;
 
 packet *packetd;
@@ -79,16 +83,18 @@ void init_second_window()
 
     GtkButton *coopButton = GTK_BUTTON(gtk_builder_get_object(builderJeu, "btnCooperate"));
     GtkButton *betrayButton = GTK_BUTTON(gtk_builder_get_object(builderJeu, "btnBetray"));
-
+    labelCoop = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblCooperate"));
     labelResult = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblResult"));
-
+    labelBetray = GTK_WIDGET(gtk_builder_get_object(builderJeu, "lblBetray"));
     switch (packetd->action_id)
     {
     case NOT_YOUR_TURN:
-        sprintf(tmpRes, "Pas votre tour");
+        sprintf(tmpRes, "Patientez votre tour arrive ! ");
         gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
         gtk_widget_hide(GTK_WIDGET(coopButton));
         gtk_widget_hide(GTK_WIDGET(betrayButton));
+        gtk_widget_hide(GTK_WIDGET(labelCoop));
+        gtk_widget_hide(GTK_WIDGET(labelBetray));
         break;
     case YOUR_TURN:
         sprintf(tmpRes, "Votre tour");
@@ -112,12 +118,38 @@ void init_second_window()
 
 int timer_handler()
 {
-    elapsed_time++;
-    char txt[100];
-    // printf("timer running, time : %d\n", elapsed_time);
-    GtkLabel *timelabel = GTK_LABEL(gtk_builder_get_object(builder, "time_display"));
-    snprintf(txt, 100, "%04i", elapsed_time);
-    gtk_label_set_text(timelabel, txt);
+    if (packetd->action_id == YOUR_TURN)
+    {
+        
+        if (elapsed_time > 0)
+        {
+            elapsed_time--;
+            char txt[100];
+            printf("timer running, time : %d\n", elapsed_time);
+            timelabel = GTK_LABEL(gtk_builder_get_object(builderJeu, "time_display"));
+            snprintf(txt, 100, "%04i", elapsed_time);
+            gtk_label_set_text(timelabel, txt);
+        }else{
+            packetd->action_id = NO_RESPONSE;
+            bufferOut = set_parse(*packetd);
+            send(sock, bufferOut, strlen(bufferOut), 0);
+            
+        }
+        // g_source_remove(timer_id);
+        // elapsed_time = TIME_FOR_ROUND;
+        
+        //int timer_id = 0;
+    }
+    // else
+    // {
+    //     //gtk_widget_hide(GTK_WIDGET(timelabel));
+    // }
+    // if (countCurrent)
+    // {
+    //     countCurrent = countCurrent -1;
+    //     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(prog1), (gdouble) countCurrent/countDownMax);
+    // }
+
     return 1;
 }
 
@@ -160,6 +192,10 @@ void on_btnCooperate_clicked(GtkButton *b)
         packetd->action_id = COOP;
         bufferOut = set_parse(*packetd);
         send(sock, bufferOut, strlen(bufferOut), 0);
+
+        //gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(prog1), (gdouble) 1.00);
+        // g_source_remove(timer_id);
+        // elapsed_time = TIME_FOR_ROUND;
     }
 }
 void on_btnBetray_clicked(GtkButton *b)
@@ -169,6 +205,10 @@ void on_btnBetray_clicked(GtkButton *b)
         packetd->action_id = BETRAY;
         bufferOut = set_parse(*packetd);
         send(sock, bufferOut, strlen(bufferOut), 0);
+        
+        
+        // g_source_remove(timer_id);
+        // elapsed_time = TIME_FOR_ROUND;
     }
 }
 void on_entryPseudo_changed(GtkEntry *e)
@@ -203,6 +243,8 @@ void update_view(packet packetReceived)
         gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
         gtk_widget_hide(GTK_WIDGET(coopButton));
         gtk_widget_hide(GTK_WIDGET(betrayButton));
+        gtk_widget_hide(GTK_WIDGET(labelCoop));
+        gtk_widget_hide(GTK_WIDGET(labelBetray));
         break;
     case YOUR_TURN:
         sprintf(tmpRes, "Votre tour");
