@@ -1,3 +1,12 @@
+/**
+ * @file clientcxn.c
+ * @author KVEP - https://gitlab.com/kvep/
+ * @version 1.0
+ * @date 2021-12-20
+ * 
+ * @copyright Copyright (c) 2021
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,6 +20,11 @@
 #include <stdbool.h>
 #include "clientcxn.h"
 
+/**
+ * @brief receiving data from the server and transmit information to update_view
+ * @param ptr connection socket
+ * @return void* : nothing
+ */
 void *threadProcess(void * ptr) {
     char buffer_in[BUFFERSIZE];
     int sockfd = *((int *) ptr);
@@ -30,6 +44,10 @@ void *threadProcess(void * ptr) {
     //close(sockfd);
 }
 
+/**
+ * @brief start the connection between client and server
+ * @return int : connection socket
+ */
 int open_connection() {
     int sockfd;
 
@@ -69,6 +87,11 @@ int open_connection() {
     return sockfd;
 }
 
+/**
+ * @brief initialize thread, open the connection and start the first graphical window
+ * @param argc 
+ * @param argv 
+ */
 void init_thread(int argc, char **argv){
     int sockfd;
     int status = 0;
