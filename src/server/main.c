@@ -7,6 +7,16 @@
  * @copyright Copyright (c) 2021 KVEP
  */
 
+/*! \mainpage Homepage
+ *The project realized by the KVEP team aims to model the prisoner's dilemma to be played many times by a pair of different volunteers connected on a server. \n
+ *The goal is to accumulate experimental data to study the nature and specificity of the human mind. \n
+ *This project is the answer to the request of the ICS (Institute of Cognitive Sciences). \n
+ *\n
+ *Read the README.md for more information, about the functioning and the commands in particular
+ *
+ */
+
+
 #include "network/network.h"
 #include <stdio.h>
 #include <stdlib.h>
