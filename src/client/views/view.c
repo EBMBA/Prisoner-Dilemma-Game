@@ -120,7 +120,7 @@ int timer_handler()
 {
     if (packetd->action_id == YOUR_TURN)
     {
-        
+
         if (elapsed_time > 0)
         {
             elapsed_time--;
@@ -129,16 +129,17 @@ int timer_handler()
             timelabel = GTK_LABEL(gtk_builder_get_object(builderJeu, "time_display"));
             snprintf(txt, 100, "%04i", elapsed_time);
             gtk_label_set_text(timelabel, txt);
-        }else{
+        }
+        else
+        {
             packetd->action_id = NO_RESPONSE;
             bufferOut = set_parse(*packetd);
             send(sock, bufferOut, strlen(bufferOut), 0);
-            
         }
         // g_source_remove(timer_id);
         // elapsed_time = TIME_FOR_ROUND;
-        
-        //int timer_id = 0;
+
+        // int timer_id = 0;
     }
     // else
     // {
@@ -190,12 +191,13 @@ void on_btnCooperate_clicked(GtkButton *b)
     if (packetd->action_id == YOUR_TURN)
     {
         packetd->action_id = COOP;
+        packetd->time = (u_int16_t)  (5 - elapsed_time);
         bufferOut = set_parse(*packetd);
         send(sock, bufferOut, strlen(bufferOut), 0);
 
-        //gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(prog1), (gdouble) 1.00);
-        // g_source_remove(timer_id);
-        // elapsed_time = TIME_FOR_ROUND;
+        // gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(prog1), (gdouble) 1.00);
+        //  g_source_remove(timer_id);
+        //  elapsed_time = TIME_FOR_ROUND;
     }
 }
 void on_btnBetray_clicked(GtkButton *b)
@@ -203,10 +205,10 @@ void on_btnBetray_clicked(GtkButton *b)
     if (packetd->action_id == YOUR_TURN)
     {
         packetd->action_id = BETRAY;
+        packetd->time = (u_int16_t)  (5 - elapsed_time);
         bufferOut = set_parse(*packetd);
         send(sock, bufferOut, strlen(bufferOut), 0);
-        
-        
+
         // g_source_remove(timer_id);
         // elapsed_time = TIME_FOR_ROUND;
     }
@@ -247,6 +249,7 @@ void update_view(packet packetReceived)
         gtk_widget_hide(GTK_WIDGET(labelBetray));
         break;
     case YOUR_TURN:
+        elapsed_time = TIME_FOR_ROUND;
         sprintf(tmpRes, "Votre tour");
         gtk_label_set_text(GTK_LABEL(labelResult), (const gchar *)tmpRes);
         gtk_widget_show(GTK_WIDGET(coopButton));
