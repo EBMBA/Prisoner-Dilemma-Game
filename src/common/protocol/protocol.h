@@ -1,3 +1,12 @@
+/**
+ * @file protocol.h
+ * @author KVEP - https://gitlab.com/kvep/
+ * @version 1.0
+ * @date 2021-12-03
+ * 
+ * @copyright Copyright (c) 2021 KVEP
+ */
+
 #if !defined(PROTOCOL_H)
 #define PROTOCOL_H
 
@@ -21,12 +30,16 @@
 
 #define CLIENT_PATH "src/client/configuration/.id"
 
+/**
+ * @brief structure of "packet" containing all the information needed for the game.
+ * This packet is sent between the both clients and the server.
+ */
 typedef struct
 {
     u_int16_t client_id;
     u_int16_t game_id;
     u_int16_t action_id; // wait == 0 ; play == 1 ; coop == 2 ; betray == 3 ; no reponse == 4 ; finish == 5;
-    u_int16_t result_id; // wait == 0 ; win == 1; lose == 2;
+    u_int16_t result_id; // wait == 0 ; win == 1 ; lose == 2;
     u_int16_t earned_money;
     u_int16_t current_round;
     u_int16_t time;         

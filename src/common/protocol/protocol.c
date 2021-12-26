@@ -1,3 +1,12 @@
+/**
+ * @file protocol.c
+ * @author KVEP - https://gitlab.com/kvep/
+ * @version 1.0
+ * @date 2021-12-03
+ * 
+ * @copyright Copyright (c) 2021 KVEP
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,11 +17,10 @@
 #include "../utils/editconf.h"
 
 /**
- * @brief Initialize packet
- *
- * @param packetd
- * @param client_OR_server 0 for client or 1 for server
- * @return packet*
+ * @brief initilise the game packet 
+ * @param packetd game packet
+ * @param client_OR_server identification : 0 for client, 1 for server
+ * @return packet* : game packet updated
  */
 packet *init_packet(packet *packetd, int client_OR_server)
 {
@@ -37,6 +45,11 @@ packet *init_packet(packet *packetd, int client_OR_server)
     return packetd;
 }
 
+/**
+ * @brief Get the parse object : convert a "char" in packet
+ * @param bufferIn "char" to convert in packet
+ * @return packet : result of the converstion 
+ */
 packet get_parse(char *bufferIn)
 {
     packet packetd;
@@ -73,6 +86,11 @@ packet get_parse(char *bufferIn)
     return packetd;
 }
 
+/**
+ * @brief Set the parse object : convert a packet in "char"
+ * @param packetd packet to convert in "char"
+ * @return char* : result of the converstion  
+ */
 char *set_parse(packet packetd)
 {
     // printf("Protocol 5 \n");
