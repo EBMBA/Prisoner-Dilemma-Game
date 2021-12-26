@@ -45,7 +45,7 @@ Between each round, the players know what they won on the previous round allowin
 
 All parameters like number of rounds in a game, sum put into play each round, name of the game, etc... can be modified in the server config file.
 
-At the end of a game, a file containing the choices of each player in each round, the decision time and the amounts won.
+At the end of a game, a file containing the choices of each player in each round, the decision time and the amounts won is genereated in a CSV file.
 
 ***
 
@@ -59,13 +59,16 @@ At the end of a game, a file containing the choices of each player in each round
 `make server` : compile the server <br>
 `make client` : compile the client <br>
 
-`make run` : start the project (1 server and 2 client) <br>
+`make run`* : start the project (1 server and 2 clients) <br>
 `make runServer` : start the Server only<br>
 `make runClient` : start the Client only<br>
 
 `make documentation` : create documentation in `doc` folder, and open it <br>
-`make clean` : clean up directories containing source code and documentation
-
+`make clean` : clean up directories containing source code and documentation <br>
+<br>
+*<i>Functioning not guaranteed</i><br>
+<br>
+<b>For a guaranteed functioning run `make runServer` in one terminal then `make runClient` in two terminals</b>
 <br>
 
 ***
