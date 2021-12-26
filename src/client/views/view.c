@@ -125,7 +125,7 @@ int timer_handler()
         {
             elapsed_time--;
             char txt[100];
-            printf("timer running, time : %d\n", elapsed_time);
+            //printf("timer running, time : %d\n", elapsed_time);
             timelabel = GTK_LABEL(gtk_builder_get_object(builderJeu, "time_display"));
             snprintf(txt, 100, "%04i", elapsed_time);
             gtk_label_set_text(timelabel, txt);
@@ -135,22 +135,9 @@ int timer_handler()
             packetd->action_id = NO_RESPONSE;
             bufferOut = set_parse(*packetd);
             send(sock, bufferOut, strlen(bufferOut), 0);
+
         }
-        // g_source_remove(timer_id);
-        // elapsed_time = TIME_FOR_ROUND;
-
-        // int timer_id = 0;
     }
-    // else
-    // {
-    //     //gtk_widget_hide(GTK_WIDGET(timelabel));
-    // }
-    // if (countCurrent)
-    // {
-    //     countCurrent = countCurrent -1;
-    //     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(prog1), (gdouble) countCurrent/countDownMax);
-    // }
-
     return 1;
 }
 
@@ -164,13 +151,11 @@ void on_buttonPlay_clicked(GtkButton *b)
     if (timer_id == 0)
     {
         timer_id = g_timeout_add(1000, (GSourceFunc)timer_handler, NULL);
-    }
-    else
+    }else
     {
         g_source_remove(timer_id);
         timer_id = 0;
     }
-
     packetd->action_id = PLAY;
     bufferOut = set_parse(*packetd);
     send(sock, bufferOut, strlen(bufferOut), 0);
@@ -315,10 +300,8 @@ void update_view(packet packetReceived)
         default:
             break;
         }
-
         // wait 10 secondes to show results
         sleep(10);
-
         close(sock);
         exit(0);
         break;
